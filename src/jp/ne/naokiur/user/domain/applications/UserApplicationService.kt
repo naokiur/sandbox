@@ -1,5 +1,6 @@
 package jp.ne.naokiur.user.domain.applications
 
+import jp.ne.naokiur.user.domain.infra.UserRepository
 import jp.ne.naokiur.user.domain.models.users.*
 
 
@@ -14,6 +15,7 @@ import jp.ne.naokiur.user.domain.models.users.*
 
 class UserApplicationService {
     private val service = UserService()
+    private val repository = UserRepository()
 
     fun createUser(user: User) {
         if (service.isDuplicated(user)) {
@@ -24,7 +26,14 @@ class UserApplicationService {
     }
 
     fun changeUserInfo(user: User) {
+        val target = repository.find(user)
 
+        if (target.isEmpty()) {
+            throw IllegalArgumentException("not found. target id: ${user.showId()}")
+        }
+
+        target.first().changeFullName(user.fullName)
+        repository.save(target.first())
     }
 
     fun showUsers() {
