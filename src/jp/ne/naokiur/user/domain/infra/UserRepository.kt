@@ -13,8 +13,8 @@ class UserRepository {
     )
 //    }
 
-    fun find(targetUser: User): List<User> {
-        return dataStore.filter {
+    fun find(targetUser: User): User {
+        return dataStore.first {
             user -> user.equals(targetUser)
         }
     }
