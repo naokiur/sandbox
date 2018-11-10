@@ -1,19 +1,20 @@
 package jp.ne.naokiur.api.controller
 
 import jp.ne.naokiur.user.domain.applications.UserApplicationService
+import jp.ne.naokiur.user.domain.models.users.User
 
 class UserController {
-    val service = UserApplicationService()
+    private val service = UserApplicationService()
 
-    fun show(): String {
-        val users = service.showUsers()
+    fun show(): List<User> {
+//        val users = service.showUsers()
+//
+//        var result = ""
+//
+//        for (user in users) {
+//            result += "${user.userId.id} ${user.fullName.name}\n"
+//        }
 
-        var result = ""
-
-        for (user in users) {
-            result += "${user.userId.id} ${user.fullName.name}\n"
-        }
-
-        return result
+        return service.showUsers()
     }
 }
