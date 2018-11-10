@@ -35,8 +35,8 @@
 * KotlinのWebフレームワークを使用する
 * GraphQLを使う
 
-- Kotlin Conf報告会でKotlin熱が高まった
-    - Kotlin Conf報告会で `REST APIはオワコン`と聞いた
+- → Kotlin Conf報告会でKotlin熱が高まった
+    - → Kotlin Conf報告会で `REST APIはオワコン`と聞いた
 
 ---
 ### 目標の理由
@@ -47,8 +47,8 @@
     + 編集
     + 削除
 
-- [ボトムアップドメイン駆動設計](https://ddd-community-jp.connpass.com/event/103428/)に参加し、写経したい熱が高まった
-    - C#でサンプルコードを書かれていたので、Kotlinで書いてみたいとおもった
+- → [ボトムアップドメイン駆動設計](https://ddd-community-jp.connpass.com/event/103428/)に参加し、写経したい熱が高まった
+    - → C#でサンプルコードを書かれていたので、Kotlinで書いてみたいとおもった
 
 ---
 ### 今後は以下をやっていきたいとおもいます
