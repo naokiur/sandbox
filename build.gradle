@@ -1,36 +1,53 @@
-plugins {
-    id 'groovy'
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.3.12'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.71'
-}
-
 group 'naokiur'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    ext.kotlin_version = '1.3.0'
+    ext.ktor_version = '1.0.0-beta-3'
+
+    repositories {
+        mavenCentral()
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+//plugins {
+////    id 'groovy'
+////    id 'java'
+//    id 'org.jetbrains.intellij' version '0.3.12'
+//    id 'org.jetbrains.kotlin.jvm' version '1.3.0'
+//}
+
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+//apply plugin: 'org.jetbrains.intellij' //  version '0.3.12'
+apply plugin: 'org.jetbrains.kotlin.jvm' // version '1.3.0'
+
 sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile 'org.codehaus.groovy:groovy-all:2.3.11'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
-intellij {
-    version '2018.2.5'
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
-patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+
+repositories {
+    jcenter()
+    maven { url "https://dl.bintray.com/kotlin/ktor" }
+    maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
