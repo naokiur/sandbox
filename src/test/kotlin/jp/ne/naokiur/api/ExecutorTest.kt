@@ -1,17 +1,12 @@
 package jp.ne.naokiur.api
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.gson.gson
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.withTestApplication
 import jp.ne.naokiur.user.domain.infra.UserRepository
-import java.text.DateFormat
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -25,6 +20,7 @@ class ExecutorTest {
             assertEquals("Hello, world!", response.content)
         }
     }
+
     @Test
     fun testShow() = withTestApplication(Application::main) {
         val gson = GsonBuilder().setPrettyPrinting().create()
