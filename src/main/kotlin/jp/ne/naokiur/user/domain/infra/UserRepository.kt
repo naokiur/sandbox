@@ -8,8 +8,8 @@ import jp.ne.naokiur.user.domain.models.users.UserName
 class UserRepository {
 //    init {
     private val dataStore = mutableListOf(
-            User(UserId(), UserName("fuga"), FullName("hoge", "fuga")),
-            User(UserId(), UserName("puyo"), FullName("hoge", "piyo"))
+            User(UserId(1), UserName("fuga"), FullName("hoge", "fuga")),
+            User(UserId(2), UserName("puyo"), FullName("hoge", "piyo"))
     )
 //    }
 

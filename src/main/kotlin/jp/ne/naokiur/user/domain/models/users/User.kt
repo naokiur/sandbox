@@ -1,9 +1,7 @@
 package jp.ne.naokiur.user.domain.models.users
 
 // 値オブジェクト
-class UserId {
-    val id = hashCode()
-
+class UserId(val id: Int) {
     fun equals(userId: UserId): Boolean {
         return id == userId.id
     }
