@@ -2,13 +2,14 @@ package jp.ne.naokiur.api
 
 import com.google.gson.GsonBuilder
 import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.gson.GsonConverter
-import io.ktor.http.*
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
+import jp.ne.naokiur.api.domain.ApiRes
 import jp.ne.naokiur.user.domain.infra.UserRepository
 import jp.ne.naokiur.user.domain.models.users.FullName
 import jp.ne.naokiur.user.domain.models.users.User
@@ -42,22 +43,21 @@ class ExecutorTest {
 
     @Test
     fun testCreate() = withTestApplication(Application::main) {
-        val gson = GsonBuilder().setPrettyPrinting().create()
 
-        val expectendUser = User(UserId(3), UserName("test"), FullName("test", "hoge"))
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val param = User(UserId(3), UserName("test"), FullName("test", "hoge"))
 
         handleRequest(HttpMethod.Post, "/create") {
-            println(ContentType.Application.Json.toString())
+
             addHeader(HttpHeaders.Accept, ContentType.Text.Plain.toString())
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-            setBody("test")
+            setBody(gson.toJson(param))
 
-//            setBody(listOf("id" to "3", "userName" to "test", "firstName" to "test", "lastName" to "hoge").formUrlEncode())
         }.run {
-            val expectedContent = gson.toJson(repository.findAll())
 
+            val expectedContent = gson.toJson(ApiRes("Success"))
             assertEquals(HttpStatusCode.OK, response.status())
-//            assertEquals(expectedContent, response.content)
+            assertEquals(expectedContent, response.content)
         }
     }
 }

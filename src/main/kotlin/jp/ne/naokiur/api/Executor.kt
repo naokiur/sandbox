@@ -1,27 +1,23 @@
 package jp.ne.naokiur.api
 
+import com.google.gson.GsonBuilder
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.request.receive
-import io.ktor.request.receiveMultipart
-import io.ktor.request.receiveParameters
 import io.ktor.response.*
 import io.ktor.routing.*
-import java.text.*
-import java.time.*
 import jp.ne.naokiur.api.controller.UserController
+import jp.ne.naokiur.api.domain.ApiRes
+import jp.ne.naokiur.user.domain.models.users.User
 import java.text.DateFormat
-import javax.print.attribute.standard.Compression
 
 fun Application.main() {
-    data class Parameter(val message: String)
-
     val controller = UserController()
-//    install(DefaultHeaders)
-//    install(Compression)
-//    install(CallLogging)
+    install(DefaultHeaders)
+    install(Compression)
+    install(CallLogging)
     install(ContentNegotiation) {
         gson {
             setDateFormat(DateFormat.LONG)
@@ -34,18 +30,18 @@ fun Application.main() {
             call.respondText("Hello, world!", ContentType.Text.Html)
         }
         get("/show") {
-//                call.respondText(controller.show(), ContentType.Text.Html)
             call.respond(controller.show())
         }
         post("/create") {
-            val parameter = call.receive<String>()
-//            val res = call.receiveParameters()
-//            println(parameter)
+            val parameter = call.receive<User>()
+            // TODO execute Controller class.
             println(parameter)
-//            println(res)
-            call.respondText("create!!")
 
-//            println(parameter.message)
+            // Why does this respond need toJson ? How about `ContentNegotiation` ?
+            // if not calling toJson, it will respond `406 Not Acceptable`
+//            call.respond(ApiRes("Success"))
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            call.respond(gson.toJson(ApiRes("Success")))
         }
     }
 }
