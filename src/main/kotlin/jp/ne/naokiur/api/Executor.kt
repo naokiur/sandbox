@@ -34,8 +34,7 @@ fun Application.main() {
         }
         post("/create") {
             val parameter = call.receive<User>()
-            // TODO execute Controller class.
-            println(parameter)
+            controller.create(parameter)
 
             // Why does this respond need toJson ? How about `ContentNegotiation` ?
             // if not calling toJson, it will respond `406 Not Acceptable`

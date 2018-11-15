@@ -18,11 +18,11 @@ class UserApplicationService {
     private val repository = UserRepository()
 
     fun createUser(user: User) {
-//        if (service.isDuplicated(user)) {
-//            throw IllegalArgumentException()
-//        }
+        if (service.isDuplicated(user)) {
+            throw IllegalArgumentException()
+        }
 
-        service.register(user)
+        repository.save(user)
     }
 
     fun changeUserInfo(user: User) {
@@ -37,6 +37,6 @@ class UserApplicationService {
     }
 
     fun showUsers(): List<User>{
-        return service.showUsers()
+        return repository.findAll()
     }
 }
