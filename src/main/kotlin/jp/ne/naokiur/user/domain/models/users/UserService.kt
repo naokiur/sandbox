@@ -6,7 +6,7 @@ class UserService {
     private val userRepository = UserRepository()
 
     fun isDuplicated(user: User): Boolean {
-        val existUser = userRepository.find(user)
+        val existUser = userRepository.find(user.userId)
         return existUser != null
     }
 }

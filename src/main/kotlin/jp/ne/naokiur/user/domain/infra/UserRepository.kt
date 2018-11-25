@@ -13,9 +13,9 @@ class UserRepository {
     )
 //    }
 
-    fun find(targetUser: User): User? {
+    fun find(targetUserId: UserId): User? {
         return dataStore.firstOrNull {
-            user -> user.equals(targetUser)
+            user -> user.userId.equals(targetUserId)
         }
     }
 
@@ -24,6 +24,10 @@ class UserRepository {
     }
 
     fun save(targetUser: User) {
+        if (dataStore.contains(targetUser)) {
+            dataStore.remove(targetUser)
+        }
+
         dataStore.add(targetUser)
     }
 }

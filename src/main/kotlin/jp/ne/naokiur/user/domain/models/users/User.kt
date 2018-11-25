@@ -6,7 +6,7 @@ class UserId(val id: Int) {
         return id == userId.id
     }
 }
-class FullName constructor(private val firstName: String, private val lastName: String) {
+class FullName constructor(val firstName: String, val lastName: String) {
     val name = "$firstName $lastName"
 }
 class UserName constructor(val name: String) {
@@ -22,12 +22,17 @@ class UserName constructor(val name: String) {
 // エンティティ
 class User constructor(val userId: UserId, var userName: UserName, var fullName: FullName) {
 
+    fun changeUserName(changed: UserName) {
+        userName = changed
+    }
+
     fun changeFullName(changed: FullName) {
         fullName = changed
     }
 
     fun equals(user: User): Boolean {
-        return userId == user.userId
+        // TODO Double "."
+        return userId.id == user.userId.id
     }
 
     fun showId(): Int {

@@ -26,17 +26,23 @@ class UserApplicationService {
     }
 
     fun changeUserInfo(user: User) {
-        val target = repository.find(user)
+        val target = repository.find(user.userId)
 
-//        if (target.isEmpty()) {
-//            throw IllegalArgumentException("not found. target id: ${user.showId()}")
-//        }
-//
-//        target.first().changeFullName(user.fullName)
-//        repository.save(target.first())
+        // TODO remove null check
+        if (target == null) {
+            throw IllegalArgumentException("not found. target id: ${user.showId()}")
+        }
+
+        target.changeFullName(FullName(user.fullName.firstName, user.fullName.lastName))
+
+        repository.save(target)
     }
 
     fun showUsers(): List<User>{
         return repository.findAll()
+    }
+
+    fun showUser(userId: UserId): User? {
+        return repository.find(userId)
     }
 }
