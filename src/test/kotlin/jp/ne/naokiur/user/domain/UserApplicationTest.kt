@@ -12,6 +12,23 @@ class UserApplicationTest {
     private val applicationService = UserApplicationService()
 
     @Test
+    fun testCreateUser() {
+        val testUser = User(UserId(3), UserName("created"), FullName("createdFirst", "createdLast"))
+        applicationService.createUser(testUser)
+
+        assertEquals(applicationService.showUser(testUser.userId), testUser)
+    }
+
+    @Test
+    fun testShowUser() {
+
+    }
+
+    @Test
+    fun testShowUsers() {
+    }
+
+    @Test
     fun testChangeUserInfo() {
         val testUser = User(UserId(2), UserName("changed"), FullName("changedFirst", "changedLast"))
         applicationService.changeUserInfo(testUser)
