@@ -22,42 +22,42 @@ class ExecutorTest {
     private val repository = UserRepository()
 
     @Test
-    fun testHello() = withTestApplication(Application::main) {
+    fun testHello() = withTestApplication(Application::api) {
         handleRequest(HttpMethod.Get, "/").run {
             assertEquals(HttpStatusCode.OK, response.status())
             assertEquals("Hello, world!", response.content)
         }
     }
 
-//    @Test
-//    fun testShow() = withTestApplication(Application::main) {
-//        val gson = GsonBuilder().setPrettyPrinting().create()
-//
-//        handleRequest(HttpMethod.Get, "/show").run {
-//            val expectedContent = gson.toJson(repository.findAll())
-//
-//            assertEquals(HttpStatusCode.OK, response.status())
-//            assertEquals(expectedContent, response.content)
-//        }
-//    }
-//
-//    @Test
-//    fun testCreate() = withTestApplication(Application::main) {
-//
-//        val gson = GsonBuilder().setPrettyPrinting().create()
-//        val param = User(UserId(3), UserName("test"), FullName("test", "hoge"))
-//
-//        handleRequest(HttpMethod.Post, "/create") {
-//
-//            addHeader(HttpHeaders.Accept, ContentType.Text.Plain.toString())
-//            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-//            setBody(gson.toJson(param))
-//
-//        }.run {
-//
-//            val expectedContent = gson.toJson(ApiRes("Success"))
-//            assertEquals(HttpStatusCode.OK, response.status())
-//            assertEquals(expectedContent, response.content)
-//        }
-//    }
+    @Test
+    fun testShow() = withTestApplication(Application::api) {
+        val gson = GsonBuilder().setPrettyPrinting().create()
+
+        handleRequest(HttpMethod.Get, "/show").run {
+            val expectedContent = gson.toJson(repository.findAll())
+
+            assertEquals(HttpStatusCode.OK, response.status())
+            assertEquals(expectedContent, response.content)
+        }
+    }
+
+    @Test
+    fun testCreate() = withTestApplication(Application::api) {
+
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val param = User(UserId(3), UserName("test"), FullName("test", "hoge"))
+
+        handleRequest(HttpMethod.Post, "/create") {
+
+            addHeader(HttpHeaders.Accept, ContentType.Text.Plain.toString())
+            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            setBody(gson.toJson(param))
+
+        }.run {
+
+            val expectedContent = gson.toJson(ApiRes("Success"))
+            assertEquals(HttpStatusCode.OK, response.status())
+            assertEquals(expectedContent, response.content)
+        }
+    }
 }
