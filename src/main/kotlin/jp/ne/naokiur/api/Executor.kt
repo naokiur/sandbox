@@ -39,7 +39,6 @@ fun Application.api() {
 
             // Why does this respond need toJson ? How about `ContentNegotiation` ?
             // if not calling toJson, it will respond `406 Not Acceptable`
-//            call.respond(ApiRes("Success"))
             val gson = GsonBuilder().setPrettyPrinting().create()
             call.respond(gson.toJson(ApiRes("Success")))
         }
