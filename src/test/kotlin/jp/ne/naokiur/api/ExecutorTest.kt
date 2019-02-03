@@ -60,4 +60,11 @@ class ExecutorTest {
             assertEquals(expectedContent, response.content)
         }
     }
+
+    @Test
+    fun testConnect() = withTestApplication(Application::api) {
+        handleRequest(HttpMethod.Get, "/connect").run {
+            println("connect test.")
+        }
+    }
 }

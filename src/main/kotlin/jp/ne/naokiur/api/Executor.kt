@@ -10,6 +10,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import jp.ne.naokiur.api.controller.UserController
 import jp.ne.naokiur.api.domain.ApiRes
+import jp.ne.naokiur.user.domain.infra.UserRepository
 import jp.ne.naokiur.user.domain.models.users.User
 import java.text.DateFormat
 
@@ -32,6 +33,12 @@ fun Application.api() {
         }
         get("/show") {
             call.respond(controller.show())
+        }
+        get("/connect") {
+            val repository = UserRepository()
+            val res = repository.connect()
+            println("connect")
+            call.respondText(res.toString())
         }
         post("/create") {
             val parameter = call.receive<User>()
