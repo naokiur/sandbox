@@ -8,12 +8,14 @@ import io.ktor.http.*
 import io.ktor.request.receive
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 import jp.ne.naokiur.api.controller.UserController
 import jp.ne.naokiur.api.domain.ApiRes
+import jp.ne.naokiur.user.domain.infra.EmployeeRepository
 import jp.ne.naokiur.user.domain.infra.UserRepository
 import jp.ne.naokiur.user.domain.models.users.User
 import java.text.DateFormat
-
 
 fun Application.api() {
     val controller = UserController()
@@ -34,10 +36,9 @@ fun Application.api() {
         get("/show") {
             call.respond(controller.show())
         }
-        get("/connect") {
-            val repository = UserRepository()
-            val res = repository.connect()
-            println("connect")
+        get("/create-tables") {
+            val repository = EmployeeRepository()
+            val res = repository.createTable()
             call.respondText(res.toString())
         }
         post("/create") {
