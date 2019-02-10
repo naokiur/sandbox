@@ -1,13 +1,25 @@
 package jp.ne.naokiur.user.domain.models.users
 
+import java.util.*
+
 // 値オブジェクト
-class UserId(val id: Int) {
-    fun equals(userId: UserId): Boolean {
-        return id == userId.id
+class UserId(val id: String) {
+
+    fun equals(other: UserId): Boolean {
+        val isSameRef = this === other
+
+        return isSameRef || this.id == other.id
     }
 }
-class FullName constructor(val firstName: String, val lastName: String) {
-    val name = "$firstName $lastName"
+class FullName constructor(val firstName: String, val familyName: String) {
+    val name = "$firstName $familyName"
+
+    fun equals(other: FullName): Boolean {
+
+        val isSameRef = this === other
+
+        return isSameRef || (this.firstName == other.firstName && this.familyName == other.familyName)
+    }
 }
 class UserName constructor(val name: String) {
     init {
@@ -15,12 +27,24 @@ class UserName constructor(val name: String) {
             throw IllegalArgumentException()
         }
     }
+
+    fun equals(other: UserName): Boolean {
+
+        val isSameRef = this === other
+
+        return isSameRef || this.name == other.name
+    }
 }
 //class FirstName constructor(val value: String)
 //class LastName constructor(val value: String)
 
 // エンティティ
-class User constructor(val userId: UserId, var userName: UserName, var fullName: FullName) {
+class User constructor(
+        val userId: UserId = UserId(UUID.randomUUID().toString()),
+        var userName: UserName,
+        var fullName: FullName
+) {
+    constructor(userName: UserName, fullName: FullName): this(UserId(UUID.randomUUID().toString()), userName, fullName)
 
     fun changeUserName(changed: UserName) {
         userName = changed
@@ -30,12 +54,13 @@ class User constructor(val userId: UserId, var userName: UserName, var fullName:
         fullName = changed
     }
 
-    fun equals(user: User): Boolean {
-        // TODO Double "."
-        return userId.id == user.userId.id
+    fun equals(other: User): Boolean {
+        val isSameRef = this === other
+
+        return isSameRef || userId == other.userId
     }
 
-    fun showId(): Int {
+    fun showId(): String {
         return userId.id
     }
 

@@ -6,9 +6,9 @@ import jp.ne.naokiur.user.domain.models.users.User
 class UserController {
     private val service = UserApplicationService()
 
-    fun show(): List<User> {
-        return service.showUsers()
-    }
+//    fun show(): List<User> {
+//        return service.showUsers()
+//    }
 
     fun create(user: User) {
         service.createUser(user)

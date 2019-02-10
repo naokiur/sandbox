@@ -6,20 +6,28 @@ import jp.ne.naokiur.user.domain.models.users.UserId
 import jp.ne.naokiur.user.domain.models.users.UserName
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.NoSuchElementException
 
 object TUser : Table("t_user") {
-    val userId: Column<Int> = integer("user_id").primaryKey()
+    val userId: Column<String> = varchar("user_id", 128).primaryKey()
+    val userName: Column<String> = varchar("user_name", 30)
     val firstName: Column<String> = varchar("first_name", 30)
-    val lastName: Column<String> = varchar("last_name", 30)
+    val familyName: Column<String> = varchar("family_name", 30)
 }
 
 class UserRepository {
-    //    init {
-    private val dataStore = mutableListOf(
-            User(UserId(1), UserName("fuga"), FullName("hoge", "fuga")),
-            User(UserId(2), UserName("puyo"), FullName("hoge", "piyo"))
-    )
-//    }
+    val host = "jdbc:postgresql://localhost:15432/postgres"
+    val driver = "org.postgresql.Driver"
+    val dbUser = "postgres"
+    val dbPassword = "postgres_pass"
+
+    init {
+        Database.connect(host, driver, dbUser, dbPassword)
+
+        transaction {
+            SchemaUtils.create(TUser)
+        }
+    }
 
     fun connect() {
         println("Repo connect")
@@ -33,28 +41,47 @@ class UserRepository {
 //                println(user)
 //            }
             TUser.insert {
-                it[userId] = 11
+                it[userId] = "a"
                 it[firstName] = "hoge"
-                it[lastName] = "piyo"
+                it[familyName] = "piyo"
             }
         }
     }
 
-    fun find(targetUserId: UserId): User? {
-        return dataStore.firstOrNull { user ->
-            user.userId.equals(targetUserId)
-        }
-    }
+    fun find(targetUserName: UserName): User? {
+        Database.connect(host, driver, dbUser, dbPassword)
 
-    fun findAll(): List<User> {
-        return dataStore
+        return transaction {
+            val query = TUser.select { TUser.userName eq targetUserName.name }
+            val result = query.single()
+
+            val userid = UserId(result[TUser.userId])
+            val userName = UserName(result[TUser.userName])
+            val fullName = FullName(result[TUser.firstName], result[TUser.familyName])
+
+            User(userid, userName, fullName)
+        }
+//
+//        return dataStore.firstOrNull { user ->
+//            user.userId.equals(targetUserName)
+//        }
     }
+//
+//    fun findAll(): List<User> {
+//
+//        return dataStore
+//    }
 
     fun save(targetUser: User) {
-        if (dataStore.contains(targetUser)) {
-            dataStore.remove(targetUser)
-        }
+        Database.connect(host, driver, dbUser, dbPassword)
 
-        dataStore.add(targetUser)
+        transaction {
+            TUser.insert {
+                it[userId] = targetUser.userId.id
+                it[userName] = targetUser.userName.name
+                it[firstName] = targetUser.fullName.firstName
+                it[familyName] = targetUser.fullName.familyName
+            }
+        }
     }
 }

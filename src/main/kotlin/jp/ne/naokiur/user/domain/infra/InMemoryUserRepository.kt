@@ -2,20 +2,19 @@ package jp.ne.naokiur.user.domain.infra
 
 import jp.ne.naokiur.user.domain.models.users.FullName
 import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserId
 import jp.ne.naokiur.user.domain.models.users.UserName
 
 class InMemoryUserRepository {
 //    init {
     private val dataStore = mutableListOf(
-            User(UserId(1), UserName("fuga"), FullName("hoge", "fuga")),
-            User(UserId(2), UserName("puyo"), FullName("hoge", "piyo"))
+            User(UserName("fuga"), FullName("hoge", "fuga")),
+            User(UserName("puyo"), FullName("hoge", "piyo"))
     )
 //    }
 
-    fun find(targetUserId: UserId): User? {
+    fun find(targetUserName: UserName): User? {
         return dataStore.firstOrNull {
-            user -> user.userId.equals(targetUserId)
+            user -> user.userId.equals(targetUserName)
         }
     }
 

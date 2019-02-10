@@ -31,10 +31,13 @@ fun Application.api() {
 
     routing {
         get("/") {
+            print("aaaa")
             call.respondText("Hello, world!", ContentType.Text.Html)
         }
         get("/show") {
-            call.respond(controller.show())
+//            call.respond(controller.show())
+            print("aaaa")
+            call.respondText("aaa")
         }
         get("/create-tables") {
             val repository = EmployeeRepository()
