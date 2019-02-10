@@ -8,12 +8,16 @@ import io.ktor.http.*
 import io.ktor.request.receive
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 import jp.ne.naokiur.api.controller.UserController
 import jp.ne.naokiur.api.domain.ApiRes
+import jp.ne.naokiur.user.domain.infra.EmployeeRepository
+import jp.ne.naokiur.user.domain.infra.UserRepository
 import jp.ne.naokiur.user.domain.models.users.User
 import java.text.DateFormat
 
-fun Application.main() {
+fun Application.api() {
     val controller = UserController()
     install(DefaultHeaders)
     install(Compression)
@@ -27,10 +31,18 @@ fun Application.main() {
 
     routing {
         get("/") {
+            print("aaaa")
             call.respondText("Hello, world!", ContentType.Text.Html)
         }
         get("/show") {
-            call.respond(controller.show())
+//            call.respond(controller.show())
+            print("aaaa")
+            call.respondText("aaa")
+        }
+        get("/create-tables") {
+            val repository = EmployeeRepository()
+            val res = repository.createTable()
+            call.respondText(res.toString())
         }
         post("/create") {
             val parameter = call.receive<User>()
@@ -38,7 +50,6 @@ fun Application.main() {
 
             // Why does this respond need toJson ? How about `ContentNegotiation` ?
             // if not calling toJson, it will respond `406 Not Acceptable`
-//            call.respond(ApiRes("Success"))
             val gson = GsonBuilder().setPrettyPrinting().create()
             call.respond(gson.toJson(ApiRes("Success")))
         }
