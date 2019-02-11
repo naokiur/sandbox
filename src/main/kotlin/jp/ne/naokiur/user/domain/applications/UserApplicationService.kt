@@ -19,7 +19,8 @@ class UserApplicationService {
 
     fun createUser(user: User) {
         if (service.isDuplicated(user)) {
-            throw Exception("Duplicated!!")
+            print("This user is duplicated!!")
+            return
         }
 
         repository.save(user)
