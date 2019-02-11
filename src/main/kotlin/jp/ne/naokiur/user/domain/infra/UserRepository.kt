@@ -50,18 +50,6 @@ class UserRepository {
     fun find(targetUserName: UserName): User? {
         Database.connect(host, driver, dbUser, dbPassword)
 
-//        transaction {
-//            val query = TUser.select { TUser.userName eq targetUserName.name }
-//            print(query.empty())
-//        }
-//        val query = transaction {
-//            TUser.select { TUser.userName eq targetUserName.name }
-//        }
-//        print(query.empty())
-
-
-//        return null
-
         return transaction {
             val query = TUser.select { TUser.userName eq targetUserName.name }
             query.singleOrNull()
@@ -72,20 +60,6 @@ class UserRepository {
 
             User(userId, userName, fullName)
         }
-//                .takeIf { !it.empty() }?.let {
-//            print("is not empty")
-//
-////            val result = it.single()
-////
-////            val userid = UserId(result[TUser.userId])
-////            val userName = UserName(result[TUser.userName])
-////            val fullName = FullName(result[TUser.firstName], result[TUser.familyName])
-//            val userid = UserId("123")
-//            val userName = UserName("test")
-//            val fullName = FullName("first", "family")
-//
-//            User(userid, userName, fullName)
-//        }
     }
 //
 //    fun findAll(): List<User> {
