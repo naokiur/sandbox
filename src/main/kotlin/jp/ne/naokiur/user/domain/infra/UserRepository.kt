@@ -6,7 +6,6 @@ import jp.ne.naokiur.user.domain.models.users.UserId
 import jp.ne.naokiur.user.domain.models.users.UserName
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.NoSuchElementException
 
 object TUser : Table("t_user") {
     val userId: Column<String> = varchar("user_id", 128).primaryKey()
@@ -51,19 +50,41 @@ class UserRepository {
     fun find(targetUserName: UserName): User? {
         Database.connect(host, driver, dbUser, dbPassword)
 
+//        transaction {
+//            val query = TUser.select { TUser.userName eq targetUserName.name }
+//            print(query.empty())
+//        }
+//        val query = transaction {
+//            TUser.select { TUser.userName eq targetUserName.name }
+//        }
+//        print(query.empty())
+
+
+//        return null
+
         return transaction {
             val query = TUser.select { TUser.userName eq targetUserName.name }
-            val result = query.single()
+            query.singleOrNull()
+        }?.let {
+            val userId = UserId(it[TUser.userId])
+            val userName = UserName(it[TUser.userName])
+            val fullName = FullName(it[TUser.firstName], it[TUser.familyName])
 
-            val userid = UserId(result[TUser.userId])
-            val userName = UserName(result[TUser.userName])
-            val fullName = FullName(result[TUser.firstName], result[TUser.familyName])
-
-            User(userid, userName, fullName)
+            User(userId, userName, fullName)
         }
+//                .takeIf { !it.empty() }?.let {
+//            print("is not empty")
 //
-//        return dataStore.firstOrNull { user ->
-//            user.userId.equals(targetUserName)
+////            val result = it.single()
+////
+////            val userid = UserId(result[TUser.userId])
+////            val userName = UserName(result[TUser.userName])
+////            val fullName = FullName(result[TUser.firstName], result[TUser.familyName])
+//            val userid = UserId("123")
+//            val userName = UserName("test")
+//            val fullName = FullName("first", "family")
+//
+//            User(userid, userName, fullName)
 //        }
     }
 //
