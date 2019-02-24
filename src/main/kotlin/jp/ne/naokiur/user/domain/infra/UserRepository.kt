@@ -14,7 +14,7 @@ object TUser : Table("t_user") {
     val familyName: Column<String> = varchar("family_name", 30)
 }
 
-class UserRepository {
+class UserRepository: UserRepositoryInterface {
     val host = "jdbc:postgresql://localhost:15432/postgres"
     val driver = "org.postgresql.Driver"
     val dbUser = "postgres"
@@ -28,26 +28,7 @@ class UserRepository {
         }
     }
 
-    fun connect() {
-        println("Repo connect")
-        Database.connect("jdbc:postgresql://localhost:15432/postgres",
-                driver = "org.postgresql.Driver",
-                user = "postgres",
-                password = "postgres_pass")
-
-        transaction {
-//            for (user in users) {
-//                println(user)
-//            }
-            TUser.insert {
-                it[userId] = "a"
-                it[firstName] = "hoge"
-                it[familyName] = "piyo"
-            }
-        }
-    }
-
-    fun find(targetUserName: UserName): User? {
+    override fun find(targetUserName: UserName): User? {
         Database.connect(host, driver, dbUser, dbPassword)
 
         return transaction {
@@ -67,7 +48,7 @@ class UserRepository {
 //        return dataStore
 //    }
 
-    fun save(targetUser: User) {
+    override fun save(targetUser: User) {
         Database.connect(host, driver, dbUser, dbPassword)
 
         transaction {

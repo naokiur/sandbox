@@ -1,6 +1,7 @@
 package jp.ne.naokiur.user.domain.applications
 
 import jp.ne.naokiur.user.domain.infra.UserRepository
+import jp.ne.naokiur.user.domain.infra.UserRepositoryInterface
 import jp.ne.naokiur.user.domain.models.users.*
 
 
@@ -13,9 +14,10 @@ import jp.ne.naokiur.user.domain.models.users.*
 //    showUsers()
 //}
 
-class UserApplicationService {
-    private val service = UserService()
-    private val repository = UserRepository()
+class UserApplicationService(
+        private val service: UserService,
+        private val repository: UserRepositoryInterface
+) {
 
     fun createUser(user: User) {
         if (service.isDuplicated(user)) {

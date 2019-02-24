@@ -4,7 +4,7 @@ import jp.ne.naokiur.user.domain.models.users.FullName
 import jp.ne.naokiur.user.domain.models.users.User
 import jp.ne.naokiur.user.domain.models.users.UserName
 
-class InMemoryUserRepository {
+class InMemoryUserRepository: UserRepositoryInterface {
 //    init {
     private val dataStore = mutableListOf(
             User(UserName("fuga"), FullName("hoge", "fuga")),
@@ -12,7 +12,7 @@ class InMemoryUserRepository {
     )
 //    }
 
-    fun find(targetUserName: UserName): User? {
+    override fun find(targetUserName: UserName): User? {
         return dataStore.firstOrNull {
             user -> user.userId.equals(targetUserName)
         }
@@ -22,7 +22,7 @@ class InMemoryUserRepository {
         return dataStore
     }
 
-    fun save(targetUser: User) {
+    override fun save(targetUser: User) {
         if (dataStore.contains(targetUser)) {
             dataStore.remove(targetUser)
         }
