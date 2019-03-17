@@ -69,3 +69,6 @@ class User constructor(
     }
 }
 
+class UserModel(val id: String, val userName: String, val name: String)
+class FullNameModel(val firstName: String, val lastName: String)
+class UserSummaryModel(val id:String, val firstName: String)

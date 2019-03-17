@@ -46,6 +46,33 @@ class UserApplicationService(
         repository.save(target)
     }
 
+    fun removeUser(id: String) {
+        val targetId = UserId(id)
+        val target = repository.find(targetId)
+
+        if (target == null) {
+            throw IllegalArgumentException("not found. target id: ${targetId.id}")
+        }
+
+        repository.remove(target)
+    }
+
+    fun getUserInfo(id: String): UserModel? {
+        val userId = UserId(id)
+        val target = repository.find(userId)
+
+        if (target == null) {
+            return null
+        }
+
+        return UserModel(target.userId.id, target.userName.name, target.fullName.name)
+    }
+
+    fun getUserList(): List<UserSummaryModel> {
+        val users = repository.findAll()
+        return users.map { UserSummaryModel(it.userId.id, it.fullName.firstName) }
+    }
+
 //    fun showUsers(): List<User>{
 //        return repository.findAll()
 //    }
