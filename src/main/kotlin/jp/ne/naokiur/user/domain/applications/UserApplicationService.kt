@@ -19,13 +19,18 @@ class UserApplicationService(
         private val repository: UserRepositoryInterface
 ) {
 
-    fun createUser(user: User) {
-        if (service.isDuplicated(user)) {
+    fun createUser(userName: String , firstName: String, familyName: String) {
+        val targetUser = User(
+                UserName(userName),
+                FullName(firstName, familyName)
+        )
+
+        if (service.isDuplicated(targetUser)) {
             print("This user is duplicated!!")
             return
         }
 
-        repository.save(user)
+        repository.save(targetUser)
     }
 
     fun changeUserInfo(user: User) {

@@ -17,10 +17,7 @@ class UserApplicationTest {
 
     @Test
     fun testCreateUser() {
-        val testUser = User(UserName("created"), FullName("createdFirst", "createdLast"))
-        applicationService.createUser(testUser)
-
-        assertEquals(testUser, applicationService.showUser(testUser.userName))
+        applicationService.createUser("created", "createdFirst", "createdLast")
     }
 
     @Test

@@ -6,11 +6,13 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.request.receive
+import io.ktor.request.receiveParameters
+import io.ktor.request.receiveText
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import jp.ne.naokiur.api.controller.UserController
+//import jp.ne.naokiur.api.controller.UserController
 import jp.ne.naokiur.api.domain.ApiRes
 import jp.ne.naokiur.user.domain.applications.UserApplicationService
 import jp.ne.naokiur.user.domain.infra.EmployeeRepository
@@ -24,7 +26,7 @@ fun Application.api() {
     val service = UserService(repository)
     val applicationService = UserApplicationService(service, repository)
 
-    val controller = UserController(applicationService)
+//    val controller = UserController(applicationService)
     install(DefaultHeaders)
     install(Compression)
     install(CallLogging)
@@ -52,7 +54,7 @@ fun Application.api() {
         }
         post("/create") {
             val parameter = call.receive<User>()
-            controller.create(parameter)
+//            controller.create(parameter)
 
             // Why does this respond need toJson ? How about `ContentNegotiation` ?
             // if not calling toJson, it will respond `406 Not Acceptable`
