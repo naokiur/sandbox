@@ -15,6 +15,7 @@ object TUser : Table("t_user") {
 }
 
 class UserRepository: UserRepositoryInterface {
+
     val host = "jdbc:postgresql://localhost:15432/postgres"
     val driver = "org.postgresql.Driver"
     val dbUser = "postgres"
@@ -25,6 +26,21 @@ class UserRepository: UserRepositoryInterface {
 
         transaction {
             SchemaUtils.create(TUser)
+        }
+    }
+
+    override fun find(targetUserId: UserId): User? {
+        Database.connect(host, driver, dbUser, dbPassword)
+
+        return transaction {
+            val query = TUser.select { TUser.userId eq targetUserId.id }
+            query.singleOrNull()
+        }?.let {
+            val userId = UserId(it[TUser.userId])
+            val userName = UserName(it[TUser.userName])
+            val fullName = FullName(it[TUser.firstName], it[TUser.familyName])
+
+            User(userId, userName, fullName)
         }
     }
 
@@ -42,11 +58,20 @@ class UserRepository: UserRepositoryInterface {
             User(userId, userName, fullName)
         }
     }
-//
-//    fun findAll(): List<User> {
-//
-//        return dataStore
-//    }
+
+    override fun findAll(): List<User> {
+        Database.connect(host, driver, dbUser, dbPassword)
+
+        return transaction {
+            TUser.selectAll().map {
+                User(
+                        UserId(it[TUser.userId]),
+                        UserName(it[TUser.userName]),
+                        FullName(it[TUser.firstName], it[TUser.familyName])
+                )
+            }
+        }
+    }
 
     override fun save(targetUser: User) {
         Database.connect(host, driver, dbUser, dbPassword)
@@ -58,6 +83,14 @@ class UserRepository: UserRepositoryInterface {
                 it[firstName] = targetUser.fullName.firstName
                 it[familyName] = targetUser.fullName.familyName
             }
+        }
+    }
+
+    override fun remove(targetUser: User) {
+        Database.connect(host, driver, dbUser, dbPassword)
+
+        transaction {
+            TUser.deleteWhere { TUser.userId eq targetUser.userId.id }
         }
     }
 }
