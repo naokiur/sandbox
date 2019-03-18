@@ -7,6 +7,7 @@ import jp.ne.naokiur.user.domain.models.users.FullName
 import jp.ne.naokiur.user.domain.models.users.User
 import jp.ne.naokiur.user.domain.models.users.UserName
 import jp.ne.naokiur.user.domain.models.users.UserService
+import java.lang.Exception
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -17,7 +18,19 @@ class UserApplicationServiceTest {
 
     @Test
     fun testCreateUser() {
-        applicationService.createUser("created", "createdFirst", "createdLast")
+        val targetUserName = "created"
+
+        applicationService.createUser(targetUserName, "createdFirst", "createdFamily")
+
+        val result = repository.find(UserName(targetUserName))
+        assertEquals(result?.userName?.name, targetUserName)
+    }
+
+    @Test(expected = Exception::class)
+    fun testCreateUser_duplicate() {
+        repository.save(User(UserName("created"), FullName("createdFirst", "createdFamily")))
+
+        applicationService.createUser("created", "createdFirst", "createdFamily")
     }
 
     @Test

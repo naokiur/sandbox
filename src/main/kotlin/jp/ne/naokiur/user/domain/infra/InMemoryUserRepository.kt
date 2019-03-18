@@ -31,10 +31,6 @@ class InMemoryUserRepository: UserRepositoryInterface {
     }
 
     override fun save(targetUser: User) {
-        if (dataStore.contains(targetUser)) {
-            dataStore.remove(targetUser)
-        }
-
         dataStore.add(targetUser)
     }
 
