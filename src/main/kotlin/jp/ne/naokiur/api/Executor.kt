@@ -12,6 +12,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import jp.ne.naokiur.api.controller.UserController
 //import jp.ne.naokiur.api.controller.UserController
 import jp.ne.naokiur.api.domain.ApiRes
 import jp.ne.naokiur.user.domain.applications.UserApplicationService
@@ -22,11 +23,15 @@ import jp.ne.naokiur.user.domain.models.users.UserService
 import java.text.DateFormat
 
 fun Application.api() {
-    val repository = UserRepository()
-    val service = UserService(repository)
-    val applicationService = UserApplicationService(service, repository)
+//    val repository = UserRepository()
+//    val service = UserService(repository)
+//    val applicationService = UserApplicationService(service, repository)
 
-//    val controller = UserController(applicationService)
+    val repository = UserRepository()
+    val controller = UserController(
+            UserApplicationService(UserService(repository), repository)
+    )
+
     install(DefaultHeaders)
     install(Compression)
     install(CallLogging)
@@ -43,9 +48,7 @@ fun Application.api() {
             call.respondText("Hello, world!", ContentType.Text.Html)
         }
         get("/show") {
-//            call.respond(controller.show())
-            print("aaaa")
-            call.respondText("aaa")
+            call.respond(controller.index())
         }
         get("/create-tables") {
             val empRepository = EmployeeRepository()

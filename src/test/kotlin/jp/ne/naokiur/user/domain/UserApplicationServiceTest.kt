@@ -10,7 +10,7 @@ import jp.ne.naokiur.user.domain.models.users.UserService
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class UserApplicationTest {
+class UserApplicationServiceTest {
     private val repository = InMemoryUserRepository()
     private val service = UserService(repository)
     private val applicationService = UserApplicationService(service, repository)
