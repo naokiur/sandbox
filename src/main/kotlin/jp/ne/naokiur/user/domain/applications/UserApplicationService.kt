@@ -24,6 +24,7 @@ class UserApplicationService(
     fun createUser(userName: String , firstName: String, familyName: String) {
         val targetUser = factory.createUser(UserName(userName), FullName(firstName, familyName))
 
+
         if (service.isDuplicated(targetUser)) {
             throw Exception("重複しています。")
         }

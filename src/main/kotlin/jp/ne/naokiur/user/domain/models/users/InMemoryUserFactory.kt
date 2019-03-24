@@ -1,16 +1,14 @@
 package jp.ne.naokiur.user.domain.models.users
 
-import jp.ne.naokiur.user.domain.infra.TUser
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import jp.ne.naokiur.user.domain.infra.InMemoryUserRepository
 
 
-class InMemoryUserFactory: UserFactoryInterface {
-    private var currentId = 1
+class InMemoryUserFactory : UserFactoryInterface {
+    private val repository = InMemoryUserRepository()
 
     override fun createUser(userName: UserName, fullName: FullName): User {
-        currentId++
+        val newId = repository.nextIdentity()
 
-        return User(UserId(currentId.toString()), userName, fullName)
+        return User(newId, userName, fullName)
     }
 }

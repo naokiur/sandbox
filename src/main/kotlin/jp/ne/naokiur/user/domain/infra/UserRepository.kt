@@ -1,10 +1,8 @@
 package jp.ne.naokiur.user.domain.infra
 
-import jp.ne.naokiur.user.domain.models.users.FullName
-import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserId
-import jp.ne.naokiur.user.domain.models.users.UserName
+import jp.ne.naokiur.user.domain.models.users.*
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object TUser : Table("t_user") {
@@ -12,6 +10,10 @@ object TUser : Table("t_user") {
     val userName: Column<String> = varchar("user_name", 30)
     val firstName: Column<String> = varchar("first_name", 30)
     val familyName: Column<String> = varchar("family_name", 30)
+}
+
+object TSeq : Table("t_seq") {
+    val id: Column<Int> = integer("id")
 }
 
 class UserRepository: UserRepositoryInterface {
@@ -26,6 +28,12 @@ class UserRepository: UserRepositoryInterface {
 
         transaction {
             SchemaUtils.create(TUser)
+            SchemaUtils.create(TSeq)
+
+            val isEmptySeqRecord = TSeq.selectAll().empty()
+            if (isEmptySeqRecord) {
+                TSeq.insert { it[id] = 1 }
+            }
         }
     }
 
@@ -92,5 +100,23 @@ class UserRepository: UserRepositoryInterface {
         transaction {
             TUser.deleteWhere { TUser.userId eq targetUser.userId.id }
         }
+    }
+
+    override fun nextIdentity(): UserId {
+        Database.connect(host, driver, dbUser, dbPassword)
+
+        transaction {
+            TSeq.update {
+                with(SqlExpressionBuilder) {
+                    it.update(TSeq.id, TSeq.id + 1)
+                }
+            }
+        }
+
+        val seqId = transaction {
+            TSeq.selectAll().first().toString()
+        }
+
+        return UserId(seqId)
     }
 }

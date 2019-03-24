@@ -3,11 +3,12 @@ package jp.ne.naokiur.user.domain.infra
 import jp.ne.naokiur.user.domain.models.users.*
 
 class InMemoryUserRepository: UserRepositoryInterface {
-    private val factory = InMemoryUserFactory()
-    //    init {
+    private var currentId = 1
+
+        //    init {
     private val dataStore = mutableListOf(
-            factory.createUser(UserName("fuga"), FullName("hoge", "fuga")),
-            factory.createUser(UserName("puyo"), FullName("hoge", "piyo"))
+            User(nextIdentity(), UserName("fuga"), FullName("hoge", "fuga")),
+            User(nextIdentity(), UserName("puyo"), FullName("hoge", "piyo"))
     )
 //    }
 
@@ -33,5 +34,11 @@ class InMemoryUserRepository: UserRepositoryInterface {
 
     override fun remove(targetUser: User) {
         dataStore.remove(targetUser)
+    }
+
+    override fun nextIdentity(): UserId {
+        currentId++
+
+        return UserId(currentId.toString())
     }
 }

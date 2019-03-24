@@ -10,4 +10,5 @@ interface UserRepositoryInterface {
     fun findAll(): List<User>
     fun save(targetUser: User)
     fun remove(targetUser: User)
+    fun nextIdentity(): UserId
 }
