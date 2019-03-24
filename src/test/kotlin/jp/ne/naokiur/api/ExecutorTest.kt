@@ -11,14 +11,13 @@ import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
 import jp.ne.naokiur.api.domain.ApiRes
 import jp.ne.naokiur.user.domain.infra.UserRepository
-import jp.ne.naokiur.user.domain.models.users.FullName
-import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserName
+import jp.ne.naokiur.user.domain.models.users.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ExecutorTest {
     private val repository = UserRepository()
+    private val factory = InMemoryUserFactory()
 
     @Test
     fun testHello() = withTestApplication(Application::api) {
@@ -44,7 +43,7 @@ class ExecutorTest {
     fun testCreate() = withTestApplication(Application::api) {
 
         val gson = GsonBuilder().setPrettyPrinting().create()
-        val param = User(UserName("test"), FullName("test", "hoge"))
+        val param = factory.createUser(UserName("test"), FullName("test", "hoge"))
 
         handleRequest(HttpMethod.Post, "/create") {
 

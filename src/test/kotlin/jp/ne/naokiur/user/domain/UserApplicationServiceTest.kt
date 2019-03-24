@@ -3,10 +3,7 @@ package jp.ne.naokiur.user.domain
 import jp.ne.naokiur.user.domain.applications.UserApplicationService
 import jp.ne.naokiur.user.domain.infra.InMemoryUserRepository
 import jp.ne.naokiur.user.domain.infra.UserRepository
-import jp.ne.naokiur.user.domain.models.users.FullName
-import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserName
-import jp.ne.naokiur.user.domain.models.users.UserService
+import jp.ne.naokiur.user.domain.models.users.*
 import java.lang.Exception
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,7 +11,8 @@ import kotlin.test.assertEquals
 class UserApplicationServiceTest {
     private val repository = InMemoryUserRepository()
     private val service = UserService(repository)
-    private val applicationService = UserApplicationService(service, repository)
+    private val factory = InMemoryUserFactory()
+    private val applicationService = UserApplicationService(service, repository, factory)
 
     @Test
     fun testCreateUser() {
@@ -28,7 +26,7 @@ class UserApplicationServiceTest {
 
     @Test(expected = Exception::class)
     fun testCreateUser_duplicate() {
-        repository.save(User(UserName("created"), FullName("createdFirst", "createdFamily")))
+        repository.save(factory.createUser(UserName("created"), FullName("createdFirst", "createdFamily")))
 
         applicationService.createUser("created", "createdFirst", "createdFamily")
     }
@@ -44,7 +42,7 @@ class UserApplicationServiceTest {
 
     @Test
     fun testChangeUserInfo() {
-        val testUser = User(UserName("changed"), FullName("changedFirst", "changedLast"))
+        val testUser = factory.createUser(UserName("changed"), FullName("changedFirst", "changedLast"))
         applicationService.changeUserInfo(testUser)
 
         val resultUser = applicationService.showUser(testUser.userName)

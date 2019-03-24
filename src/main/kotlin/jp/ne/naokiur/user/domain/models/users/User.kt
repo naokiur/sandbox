@@ -44,8 +44,6 @@ class User constructor(
         var userName: UserName,
         var fullName: FullName
 ) {
-    constructor(userName: UserName, fullName: FullName): this(UserId(UUID.randomUUID().toString()), userName, fullName)
-
     fun changeUserName(changed: UserName) {
         userName = changed
     }

@@ -19,6 +19,7 @@ import jp.ne.naokiur.user.domain.applications.UserApplicationService
 import jp.ne.naokiur.user.domain.infra.EmployeeRepository
 import jp.ne.naokiur.user.domain.infra.UserRepository
 import jp.ne.naokiur.user.domain.models.users.User
+import jp.ne.naokiur.user.domain.models.users.UserFactory
 import jp.ne.naokiur.user.domain.models.users.UserService
 import java.text.DateFormat
 
@@ -29,7 +30,7 @@ fun Application.api() {
 
     val repository = UserRepository()
     val controller = UserController(
-            UserApplicationService(UserService(repository), repository)
+            UserApplicationService(UserService(repository), repository, UserFactory())
     )
 
     install(DefaultHeaders)

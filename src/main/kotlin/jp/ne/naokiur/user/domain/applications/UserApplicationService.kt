@@ -17,14 +17,12 @@ import java.lang.Exception
 
 class UserApplicationService(
         private val service: UserService,
-        private val repository: UserRepositoryInterface
+        private val repository: UserRepositoryInterface,
+        private val factory: UserFactoryInterface
 ) {
 
     fun createUser(userName: String , firstName: String, familyName: String) {
-        val targetUser = User(
-                UserName(userName),
-                FullName(firstName, familyName)
-        )
+        val targetUser = factory.createUser(UserName(userName), FullName(firstName, familyName))
 
         if (service.isDuplicated(targetUser)) {
             throw Exception("重複しています。")

@@ -1,16 +1,13 @@
 package jp.ne.naokiur.user.domain.infra
 
-import jp.ne.naokiur.user.domain.models.users.FullName
-import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserId
-import jp.ne.naokiur.user.domain.models.users.UserName
+import jp.ne.naokiur.user.domain.models.users.*
 
 class InMemoryUserRepository: UserRepositoryInterface {
-
+    private val factory = InMemoryUserFactory()
     //    init {
     private val dataStore = mutableListOf(
-            User(UserName("fuga"), FullName("hoge", "fuga")),
-            User(UserName("puyo"), FullName("hoge", "piyo"))
+            factory.createUser(UserName("fuga"), FullName("hoge", "fuga")),
+            factory.createUser(UserName("puyo"), FullName("hoge", "piyo"))
     )
 //    }
 
