@@ -19,7 +19,7 @@ class CircleApplicationService(
             throw Exception("Owner is not found. userId: $userId")
         }
 
-        val circle = circleFactory.create(ownerId, circleName)
+        val circle = owner.create(circleFactory, circleName)
         circleRepository.save(circle)
     }
 }

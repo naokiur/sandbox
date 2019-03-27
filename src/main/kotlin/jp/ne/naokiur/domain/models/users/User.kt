@@ -1,5 +1,7 @@
 package jp.ne.naokiur.domain.models.users
 
+import jp.ne.naokiur.domain.models.circle.Circle
+import jp.ne.naokiur.domain.models.circle.CircleFactoryInteface
 import java.util.*
 
 // 値オブジェクト
@@ -64,6 +66,10 @@ class User constructor(
 
     fun showFullName(): String {
         return fullName.name
+    }
+
+    fun create(circleFactory: CircleFactoryInteface, circleName: String): Circle {
+        return circleFactory.create(this.userId, circleName)
     }
 }
 
