@@ -1,12 +1,10 @@
-package jp.ne.naokiur.domain.infra
+package jp.ne.naokiur.domain.infra.user
 
 import jp.ne.naokiur.domain.models.users.FullName
 import jp.ne.naokiur.domain.models.users.User
 import jp.ne.naokiur.domain.models.users.UserId
 import jp.ne.naokiur.domain.models.users.UserName
-import jp.ne.naokiur.user.domain.models.users.*
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object TUser : Table("t_user") {

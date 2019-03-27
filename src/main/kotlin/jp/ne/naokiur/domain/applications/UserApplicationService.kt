@@ -1,9 +1,7 @@
 package jp.ne.naokiur.domain.applications
 
-import jp.ne.naokiur.domain.infra.UserRepository
-import jp.ne.naokiur.domain.infra.UserRepositoryInterface
+import jp.ne.naokiur.domain.infra.user.UserRepositoryInterface
 import jp.ne.naokiur.domain.models.users.*
-import jp.ne.naokiur.user.domain.models.users.*
 import java.lang.Exception
 
 

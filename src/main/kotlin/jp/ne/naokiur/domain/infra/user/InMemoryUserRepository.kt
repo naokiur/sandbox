@@ -1,10 +1,9 @@
-package jp.ne.naokiur.domain.infra
+package jp.ne.naokiur.domain.infra.user
 
 import jp.ne.naokiur.domain.models.users.FullName
 import jp.ne.naokiur.domain.models.users.User
 import jp.ne.naokiur.domain.models.users.UserId
 import jp.ne.naokiur.domain.models.users.UserName
-import jp.ne.naokiur.user.domain.models.users.*
 
 class InMemoryUserRepository: UserRepositoryInterface {
     private var currentId = 1

@@ -1,6 +1,6 @@
 package jp.ne.naokiur.domain.models.users
 
-import jp.ne.naokiur.domain.infra.InMemoryUserRepository
+import jp.ne.naokiur.domain.infra.user.InMemoryUserRepository
 
 
 class InMemoryUserFactory : UserFactoryInterface {

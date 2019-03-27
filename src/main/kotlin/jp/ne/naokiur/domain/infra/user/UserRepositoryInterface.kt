@@ -1,4 +1,4 @@
-package jp.ne.naokiur.domain.infra
+package jp.ne.naokiur.domain.infra.user
 
 import jp.ne.naokiur.domain.models.users.User
 import jp.ne.naokiur.domain.models.users.UserId

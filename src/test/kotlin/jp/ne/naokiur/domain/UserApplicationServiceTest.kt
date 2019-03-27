@@ -1,13 +1,11 @@
 package jp.ne.naokiur.domain
 
 import jp.ne.naokiur.domain.applications.UserApplicationService
-import jp.ne.naokiur.domain.infra.InMemoryUserRepository
-import jp.ne.naokiur.domain.infra.UserRepository
+import jp.ne.naokiur.domain.infra.user.InMemoryUserRepository
 import jp.ne.naokiur.domain.models.users.FullName
 import jp.ne.naokiur.domain.models.users.InMemoryUserFactory
 import jp.ne.naokiur.domain.models.users.UserName
 import jp.ne.naokiur.domain.models.users.UserService
-import jp.ne.naokiur.user.domain.models.users.*
 import java.lang.Exception
 import kotlin.test.Test
 import kotlin.test.assertEquals
