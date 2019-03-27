@@ -1,5 +1,9 @@
-package jp.ne.naokiur.user.domain.infra
+package jp.ne.naokiur.domain.infra
 
+import jp.ne.naokiur.domain.models.users.FullName
+import jp.ne.naokiur.domain.models.users.User
+import jp.ne.naokiur.domain.models.users.UserId
+import jp.ne.naokiur.domain.models.users.UserName
 import jp.ne.naokiur.user.domain.models.users.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
@@ -108,7 +112,7 @@ class UserRepository: UserRepositoryInterface {
         transaction {
             TSeq.update {
                 with(SqlExpressionBuilder) {
-                    it.update(TSeq.id, TSeq.id + 1)
+                    it.update(id, id + 1)
                 }
             }
         }

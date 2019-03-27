@@ -1,10 +1,10 @@
 package jp.ne.naokiur.api.controller
 
-import jp.ne.naokiur.user.domain.applications.UserApplicationService
-import jp.ne.naokiur.user.domain.infra.UserRepository
-import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserService
-import jp.ne.naokiur.user.domain.models.users.UserSummaryModel
+import jp.ne.naokiur.domain.applications.UserApplicationService
+import jp.ne.naokiur.domain.infra.UserRepository
+import jp.ne.naokiur.domain.models.users.User
+import jp.ne.naokiur.domain.models.users.UserService
+import jp.ne.naokiur.domain.models.users.UserSummaryModel
 
 class UserController(private val service: UserApplicationService) {
 //    private val service = UserApplicationService(UserService(UserRepository()), UserRepository())

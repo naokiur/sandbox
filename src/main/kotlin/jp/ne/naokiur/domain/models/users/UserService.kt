@@ -1,7 +1,7 @@
-package jp.ne.naokiur.user.domain.models.users
+package jp.ne.naokiur.domain.models.users
 
-import jp.ne.naokiur.user.domain.infra.UserRepository
-import jp.ne.naokiur.user.domain.infra.UserRepositoryInterface
+import jp.ne.naokiur.domain.infra.UserRepository
+import jp.ne.naokiur.domain.infra.UserRepositoryInterface
 
 class UserService(private val userRepository: UserRepositoryInterface) {
 

@@ -1,8 +1,8 @@
-package jp.ne.naokiur.user.domain.infra
+package jp.ne.naokiur.domain.infra
 
-import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserId
-import jp.ne.naokiur.user.domain.models.users.UserName
+import jp.ne.naokiur.domain.models.users.User
+import jp.ne.naokiur.domain.models.users.UserId
+import jp.ne.naokiur.domain.models.users.UserName
 
 interface UserRepositoryInterface {
     fun find(targetUserId: UserId): User?

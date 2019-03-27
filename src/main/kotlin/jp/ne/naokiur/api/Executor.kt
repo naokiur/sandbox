@@ -15,12 +15,12 @@ import io.ktor.server.netty.Netty
 import jp.ne.naokiur.api.controller.UserController
 //import jp.ne.naokiur.api.controller.UserController
 import jp.ne.naokiur.api.domain.ApiRes
-import jp.ne.naokiur.user.domain.applications.UserApplicationService
-import jp.ne.naokiur.user.domain.infra.EmployeeRepository
-import jp.ne.naokiur.user.domain.infra.UserRepository
-import jp.ne.naokiur.user.domain.models.users.User
-import jp.ne.naokiur.user.domain.models.users.UserFactory
-import jp.ne.naokiur.user.domain.models.users.UserService
+import jp.ne.naokiur.domain.applications.UserApplicationService
+import jp.ne.naokiur.domain.infra.EmployeeRepository
+import jp.ne.naokiur.domain.infra.UserRepository
+import jp.ne.naokiur.domain.models.users.User
+import jp.ne.naokiur.domain.models.users.UserFactory
+import jp.ne.naokiur.domain.models.users.UserService
 import java.text.DateFormat
 
 fun Application.api() {

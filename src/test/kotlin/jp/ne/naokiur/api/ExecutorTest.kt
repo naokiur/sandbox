@@ -10,7 +10,10 @@ import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
 import jp.ne.naokiur.api.domain.ApiRes
-import jp.ne.naokiur.user.domain.infra.UserRepository
+import jp.ne.naokiur.domain.infra.UserRepository
+import jp.ne.naokiur.domain.models.users.FullName
+import jp.ne.naokiur.domain.models.users.InMemoryUserFactory
+import jp.ne.naokiur.domain.models.users.UserName
 import jp.ne.naokiur.user.domain.models.users.*
 import kotlin.test.Test
 import kotlin.test.assertEquals

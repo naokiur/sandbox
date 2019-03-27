@@ -1,4 +1,4 @@
-package jp.ne.naokiur.user.domain.models.circle
+package jp.ne.naokiur.domain.models.circle
 
 class Circle(val id: CircleId, val name: String) {
 

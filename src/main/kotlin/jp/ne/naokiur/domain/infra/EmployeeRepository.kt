@@ -1,4 +1,4 @@
-package jp.ne.naokiur.user.domain.infra
+package jp.ne.naokiur.domain.infra
 
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity

@@ -1,5 +1,9 @@
-package jp.ne.naokiur.user.domain.infra
+package jp.ne.naokiur.domain.infra
 
+import jp.ne.naokiur.domain.models.users.FullName
+import jp.ne.naokiur.domain.models.users.User
+import jp.ne.naokiur.domain.models.users.UserId
+import jp.ne.naokiur.domain.models.users.UserName
 import jp.ne.naokiur.user.domain.models.users.*
 
 class InMemoryUserRepository: UserRepositoryInterface {
@@ -7,8 +11,8 @@ class InMemoryUserRepository: UserRepositoryInterface {
 
         //    init {
     private val dataStore = mutableListOf(
-            User(nextIdentity(), UserName("fuga"), FullName("hoge", "fuga")),
-            User(nextIdentity(), UserName("puyo"), FullName("hoge", "piyo"))
+                User(nextIdentity(), UserName("fuga"), FullName("hoge", "fuga")),
+                User(nextIdentity(), UserName("puyo"), FullName("hoge", "piyo"))
     )
 //    }
 
