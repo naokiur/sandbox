@@ -3,6 +3,7 @@ package jp.ne.naokiur.domain.infra.circle
 import jp.ne.naokiur.domain.infra.user.TUser
 import jp.ne.naokiur.domain.models.circle.Circle
 import jp.ne.naokiur.domain.models.circle.CircleId
+import jp.ne.naokiur.domain.models.circle.CircleNotification
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -28,11 +29,13 @@ class CircleRepository: CircleRepositoryInterface{
 
     override fun save(circle: Circle) {
         Database.connect(host, driver, dbUser, dbPassword)
+        val note = CircleNotification(circle.id, circle.name, circle.userIds)
+        val data = note.build()
 
         transaction {
-            TCircle.update({ TCircle.circleId eq circle.id.id }) {
-                it[TCircle.circleName] = circle.name
-                it[TCircle.joinMembers] = circle.userIds.joinToString(",")
+            TCircle.update({ TCircle.circleId eq data.id }) {
+                it[TCircle.circleName] = data.name
+                it[TCircle.joinMembers] = data.userIds.joinToString(",")
             }
         }
     }

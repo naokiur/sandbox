@@ -17,6 +17,12 @@ class Circle(val id: CircleId, val name: String, val userIds: MutableList<UserId
 
         userIds.add(userId)
     }
+
+//    fun notify(note: CircleNotification) {
+//        note.id(id)
+//        note.name(name)
+//        note.users(mutableListOf(userIds))
+//    }
 }
 
 class CircleId(val id: String) {
