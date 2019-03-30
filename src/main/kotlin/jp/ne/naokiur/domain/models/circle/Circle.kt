@@ -1,9 +1,8 @@
 package jp.ne.naokiur.domain.models.circle
 
-import jp.ne.naokiur.domain.models.users.User
 import jp.ne.naokiur.domain.models.users.UserId
 
-class Circle(val id: CircleId, val name: String, val users: MutableList<UserId>) {
+class Circle(val id: CircleId, val name: String, val userIds: MutableList<UserId>) {
 
     fun equals(other: Circle): Boolean {
         val isSameRef = this === other
@@ -12,11 +11,11 @@ class Circle(val id: CircleId, val name: String, val users: MutableList<UserId>)
     }
 
     fun join(userId: UserId) {
-        if (users.count() >= 30) {
+        if (userIds.count() >= 30) {
             throw Exception("too many members")
         }
 
-        users.add(userId)
+        userIds.add(userId)
     }
 }
 
