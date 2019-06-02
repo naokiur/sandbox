@@ -1,5 +1,7 @@
 package jp.ne.naokiur.transcribing.gettingstarted
 
+import java.io.File
+
 class Idioms {
     fun execute() {
         println("${this.javaClass.name} begin.")
@@ -7,8 +9,11 @@ class Idioms {
         defaultValues()
         filteringAList()
         lazyProperty()
-        extentionFunctions()
-
+        extensionFunctions()
+        creatnigAShingleton()
+        ifNotNullShortHand()
+        getFirstItemOfAPossibilyEmptyCollection()
+        executeIfNotNull()
 
         println("${this.javaClass.name} end.")
     }
@@ -63,11 +68,54 @@ class Idioms {
         println(notLazy())
     }
 
-    private fun extentionFunctions() {
-//        fun String.spaceToCamelCase() {
-//            println(it)
-//        }
+    private fun extensionFunctions() {
+        fun String.spaceRemovePrint() {
+            println(this.replace(" ", ""))
+        }
 
-//        "Convert this to camelcase".spaceToCamelCase()
+        "Convert this to camelcase".spaceRemovePrint()
     }
+    object Resource {
+        const val name = "Name"
+    }
+    class ResourceClass {
+        val name = "Name"
+    }
+    private fun creatnigAShingleton() {
+        val name1FromObject = Resource
+        val name2FromObject = Resource
+
+        val name1 = ResourceClass()
+        val name2 = ResourceClass()
+        println("Class diff is : ${name1 == name2}")
+        println("Object diff is : ${name1FromObject == name2FromObject}")
+    }
+    private fun ifNotNullShortHand() {
+        val files = File("Test").listFiles()
+        println(files?.size)
+        println(files?.size ?: "empty")
+//        println(files?.size ?: throw IllegalStateException("Empty Exception"))
+    }
+    private fun getFirstItemOfAPossibilyEmptyCollection() {
+        val emails = emptyList<String>()
+        val mainEmail = emails.firstOrNull() ?: ""
+        println(mainEmail)
+    }
+    private fun executeIfNotNull() {
+        var value = "aaa"
+        value?.let {
+            println("Not null")
+        }
+        // I want to get null. Confirm idiom.
+        val lists = File("Test").listFiles()
+        lists?.let {
+            println("Not null")
+        }
+
+        // I want to get null. Confirm idiom.
+        val map = File("Test").listFiles()
+        val mapped = map?.let { it.first()  } ?: mapOf(Pair(1, "one"))
+        println(mapped)
+    }
+
 }
