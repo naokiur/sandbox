@@ -14,6 +14,11 @@ class Idioms {
         ifNotNullShortHand()
         getFirstItemOfAPossibilyEmptyCollection()
         executeIfNotNull()
+        returnOnWhenStatement()
+        tryCatchException()
+        ifExpression()
+        builderStyleUsageOfMethodsThatReturnUnit()
+        singleExpressionFunctions()
 
         println("${this.javaClass.name} end.")
     }
@@ -117,5 +122,61 @@ class Idioms {
         val mapped = map?.let { it.first()  } ?: mapOf(Pair(1, "one"))
         println(mapped)
     }
+    private fun returnOnWhenStatement() {
+        fun transform(color: String): Int {
+            return when (color) {
+                "Red" -> 0
+                "Green" -> 1
+                "Blue" -> 2
+                else -> throw IllegalArgumentException("Invalid color param value")
+            }
+        }
+
+        println("Red is : ${transform("Red")}")
+    }
+    private fun tryCatchException() {
+        val result = try {
+            println("result")
+            throw ArithmeticException("throw ArithmeticException")
+        } catch (e: ArithmeticException) {
+            println(e)
+        }
+
+        println(result)
+    }
+    private fun ifExpression() {
+        fun foo(param: Int) {
+            val result = if (param == 1) {
+                "one"
+            } else if (param == 2) {
+                "two"
+            } else {
+                "three"
+            }
+            println(result)
+        }
+        foo(1)
+    }
+    private fun builderStyleUsageOfMethodsThatReturnUnit() {
+        fun arrayOfMinusOnes(size: Int): IntArray {
+            return IntArray(size).apply { fill(-1) }
+        }
+
+        val lists = arrayOfMinusOnes(3)
+        lists.map { println(it) }
+    }
+    private fun singleExpressionFunctions() {
+        fun theAnswer() = 42
+        println(theAnswer())
+
+        fun theAnswer2(): Int {
+            return 42
+        }
+        println(theAnswer2())
+    }
+    private fun callingMultipleMethodsOnAnObjectInstance() {
+
+    }
+
 
 }
