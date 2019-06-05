@@ -19,6 +19,7 @@ class Idioms {
         ifExpression()
         builderStyleUsageOfMethodsThatReturnUnit()
         singleExpressionFunctions()
+        callingMultipleMethodsOnAnObjectInstance()
 
         println("${this.javaClass.name} end.")
     }
@@ -175,8 +176,21 @@ class Idioms {
         println(theAnswer2())
     }
     private fun callingMultipleMethodsOnAnObjectInstance() {
+        class Turtle {
+            fun penDown() = println("penDown")
+            fun penUp() = println("penUp")
+            fun turn(degree: Double) = println("turn $degree")
+            fun forward(pixels: Double) = println("forward $pixels")
+        }
 
+        val myTurtle = Turtle()
+        with(myTurtle) {
+            penDown()
+            for (i in 1..4) {
+                forward(100.0)
+                turn(90.0)
+            }
+            penUp()
+        }
     }
-
-
 }
