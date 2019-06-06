@@ -20,6 +20,8 @@ class Idioms {
         builderStyleUsageOfMethodsThatReturnUnit()
         singleExpressionFunctions()
         callingMultipleMethodsOnAnObjectInstance()
+        consumingANullableBoolean()
+        swappingTwoVariables()
 
         println("${this.javaClass.name} end.")
     }
@@ -192,5 +194,24 @@ class Idioms {
             }
             penUp()
         }
+    }
+    private fun consumingANullableBoolean() {
+        fun returnNullable(isNull: Boolean): Boolean? {
+            return if (isNull) null else true
+        }
+        val b: Boolean? = returnNullable(true)
+
+        if (b == true) {
+            println("b is true: $b")
+        } else {
+            println("b is false or null: $b")
+        }
+    }
+    private fun swappingTwoVariables() {
+        var a = 1
+        var b = 2
+
+        a = b.also { b = a }
+        println("a is $a, b is $b")
     }
 }
