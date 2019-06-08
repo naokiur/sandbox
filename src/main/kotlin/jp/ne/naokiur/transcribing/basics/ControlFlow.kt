@@ -7,6 +7,8 @@ class ControlFlow {
         println("${this.javaClass.name} begin.")
         ifExpression()
         whenExpression()
+        forLoops()
+        whileLoops()
         println("${this.javaClass.name} end.")
     }
 
@@ -120,5 +122,45 @@ class ControlFlow {
             }
         }
         ifElseIf()
+    }
+    private fun forLoops() {
+        val lists = listOf(1, 2, 3)
+
+        for (item in lists) println(item)
+
+        for (item: Int in lists) {
+            println("block: $item")
+        }
+
+        for (i in 1..3) {
+            println("range: $i")
+        }
+
+        for (i in 6 downTo 0 step 2) {
+            println("range down: $i")
+        }
+
+        val array = listOf("a", "b", "c")
+
+        for (i in array.indices) {
+            println("indices ${array[i]}")
+        }
+
+        for ((index, value) in array.withIndex()) {
+            println("withIndex: $index is $value")
+        }
+    }
+    private fun whileLoops() {
+        var x = 10
+        while (x > 0) {
+            println("while loop: $x")
+            x--
+        }
+
+        var y = 10
+        do {
+            println("do while loop: $y")
+            y--
+        } while (y > 0)
     }
 }
