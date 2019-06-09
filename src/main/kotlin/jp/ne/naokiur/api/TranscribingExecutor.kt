@@ -14,6 +14,7 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import jp.ne.naokiur.transcribing.basics.ControlFlow
+import jp.ne.naokiur.transcribing.basics.ReturnsAndJumps
 import jp.ne.naokiur.transcribing.gettingstarted.BasicSyntax
 import jp.ne.naokiur.transcribing.gettingstarted.Idioms
 import java.text.DateFormat
@@ -38,8 +39,11 @@ fun Application.transcribing() {
 //            val idioms = Idioms()
 //            idioms.execute()
 
-            val controlFlow = ControlFlow()
-            controlFlow.execute()
+//            val controlFlow = ControlFlow()
+//            controlFlow.execute()
+
+            val returnsAndJumps = ReturnsAndJumps()
+            returnsAndJumps.execute()
 
             val gson = GsonBuilder().setPrettyPrinting().create()
             call.respond(gson.toJson("Hello"))
