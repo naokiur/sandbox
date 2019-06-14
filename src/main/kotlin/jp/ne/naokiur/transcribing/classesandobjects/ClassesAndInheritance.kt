@@ -73,5 +73,43 @@ class ClassesAndInheritance {
             println(customer.customerKey)
         }
         primaryConstructor()
+
+        fun secondaryConstructor() {
+            // If the Class has primary constructor
+            class Person(val name: String) {
+                val children: MutableList<Person> = mutableListOf()
+
+                constructor(name: String, parent: Person) : this(name) {
+                    parent.children.add(this)
+                }
+            }
+
+            val parent = Person("parent")
+            val child = Person("child", parent)
+            println(child.name)
+            child.children.forEach { println(it.name)}
+
+            println(parent.name)
+            parent.children.forEach { println("child name is: ${it.name}")}
+
+            class Constructors {
+                init {
+                    println("init block")
+                }
+
+                constructor(i: Int) {
+                    println("constructor $i")
+                }
+            }
+            val con = Constructors(1)
+
+            class DontCreateMe private constructor () {
+                fun echo() {
+                    println("Don't Create Me echo")
+                }
+            }
+//            val dont = DontCreateMe() // Cannot this
+        }
+        secondaryConstructor()
     }
 }
