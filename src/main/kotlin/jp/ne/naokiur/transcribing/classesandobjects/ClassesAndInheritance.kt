@@ -6,6 +6,7 @@ class ClassesAndInheritance {
 
         classes()
         constructors()
+        inheritance()
 
         println("${this.javaClass.name} end.")
     }
@@ -111,5 +112,66 @@ class ClassesAndInheritance {
 //            val dont = DontCreateMe() // Cannot this
         }
         secondaryConstructor()
+    }
+
+    private fun inheritance() {
+        fun inheri() {
+            open class Base(p: Int)
+
+            class Derived(val p: Int) : Base(p)
+
+            val derived = Derived(4)
+            println(derived.p)
+        }
+        inheri()
+
+        fun overrindingMethods() {
+            open class Base {
+                open fun v() {
+                    println("Base v")
+                }
+                fun nv() {
+                    println("Base nv")
+                }
+                open fun nvf() {
+                    println("Base nv")
+                }
+            }
+            class Derived: Base() {
+                override fun v() {
+                    println("Derived v")
+                }
+            }
+
+            val derived = Derived()
+            derived.v()
+            derived.nv()
+
+            open class AnotherDerived: Base() {
+                final override fun v() {
+                    println("AnotherDerived v")
+                }
+
+                override fun nvf() {
+                    println("AnotherDerived nvf")
+                }
+            }
+            class ChildAnotherDerived: AnotherDerived() {
+                override fun nvf() {
+                    println("ChildAnotherDerived nvf")
+                }
+            }
+
+            val another = AnotherDerived()
+            another.v()
+            another.nv()
+            another.nvf()
+
+            val child = ChildAnotherDerived()
+            child.v()
+            child.nv()
+            child.nvf()
+        }
+        overrindingMethods()
     }
 }
