@@ -7,6 +7,7 @@ class ClassesAndInheritance {
         classes()
         constructors()
         inheritance()
+        overridingProperty()
 
         println("${this.javaClass.name} end.")
     }
@@ -174,4 +175,39 @@ class ClassesAndInheritance {
         }
         overrindingMethods()
     }
+    private fun overridingProperty() {
+        open class Foo {
+            open val x: Int get() { return 2 }
+        }
+
+        class Bar1: Foo() {
+            override val x: Int
+                get() = 5
+        }
+
+        val foo = Foo()
+        println(foo.x)
+
+        val bar1 = Bar1()
+        println(bar1.x)
+
+        class Bar2(override val count: Int) : FooInterface
+
+        class Bar3 : FooInterface {
+            override var count: Int = 0
+        }
+
+        val bar2 = Bar2(1000)
+        println("bar2.count: ${bar2.count}")
+//        bar2.count += 1 // Compile error because this is 'val'.
+
+        val bar3 = Bar3()
+        println("bar3.count: ${bar3.count}")
+        bar3.count++ // Not Compile error because this is 'var'.
+        println("bar3.count ${bar3.count}")
+    }
+}
+
+interface FooInterface {
+    val count: Int
 }
