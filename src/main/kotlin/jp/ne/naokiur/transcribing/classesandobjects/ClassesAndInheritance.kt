@@ -9,6 +9,7 @@ class ClassesAndInheritance {
         inheritance()
         overridingProperty()
         derivedClassInitializationOrder()
+        callingTheSuperClassImplementation()
 
         println("${this.javaClass.name} end.")
     }
@@ -226,6 +227,46 @@ class ClassesAndInheritance {
 
         val derived = Derived("name", "lastName")
         println("derived.size: ${derived.size}")
+    }
+    private fun callingTheSuperClassImplementation() {
+        open class Foo {
+            open fun f() { println("Foo.f()") }
+            open val x: Int get() = 1
+        }
+
+        class Bar: Foo() {
+            override fun f() {
+                super.f()
+                println("Bar.f()")
+            }
+
+            override val x: Int get() = super.x + 1
+        }
+
+        val bar = Bar()
+        bar.f()
+        println("bar.x: ${bar.x}")
+
+        class Bar2 : Foo() {
+            override fun f() {
+                super.f()
+                println("Bar2.f()")
+            }
+
+            override val x: Int get() = 0
+
+            inner class Baz {
+                fun g() {
+                    super@Bar2.f()
+                    println(super@Bar2.x)
+                }
+            }
+        }
+
+        val bar2 = Bar2()
+        bar2.f()
+        println("bar2.x: ${bar2.x}")
+        bar2.Baz().g()
     }
 }
 
