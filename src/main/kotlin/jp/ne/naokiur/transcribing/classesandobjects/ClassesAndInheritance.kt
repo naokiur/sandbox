@@ -11,6 +11,7 @@ class ClassesAndInheritance {
         derivedClassInitializationOrder()
         callingTheSuperClassImplementation()
         overridingRules()
+        abstractClasses()
 
         println("${this.javaClass.name} end.")
     }
@@ -286,6 +287,25 @@ class ClassesAndInheritance {
         c.f()
         c.a()
         c.b()
+    }
+
+    private fun abstractClasses() {
+        open class Base {
+            open fun f() {}
+        }
+
+        abstract class Derived : Base() {
+            override abstract fun f()
+        }
+
+        class DerivedChild : Derived () {
+            override fun f() {
+                println("override Derived")
+            }
+        }
+
+        val child = DerivedChild()
+        child.f()
     }
 }
 
