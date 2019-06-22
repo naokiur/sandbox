@@ -10,6 +10,7 @@ class ClassesAndInheritance {
         overridingProperty()
         derivedClassInitializationOrder()
         callingTheSuperClassImplementation()
+        overridingRules()
 
         println("${this.javaClass.name} end.")
     }
@@ -268,8 +269,30 @@ class ClassesAndInheritance {
         println("bar2.x: ${bar2.x}")
         bar2.Baz().g()
     }
+    private fun overridingRules() {
+        open class A {
+            open fun f() { println("A") }
+            fun a() { println("a") }
+        }
+
+        class C : A(), B {
+            override fun f() {
+                super<A>.f()
+                super<B>.f()
+            }
+        }
+
+        val c = C()
+        c.f()
+        c.a()
+        c.b()
+    }
 }
 
 interface FooInterface {
     val count: Int
+}
+interface B {
+    fun f() { println("B") }
+    fun b() { println("b") }
 }
