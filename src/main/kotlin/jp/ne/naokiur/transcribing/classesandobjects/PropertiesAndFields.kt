@@ -5,6 +5,7 @@ class PropertiesAndFields {
         println("${this.javaClass.name} begin.")
 
         getterAndSetter()
+        backingFields()
 
         println("${this.javaClass.name} end.")
     }
@@ -41,5 +42,32 @@ class PropertiesAndFields {
         println("address.setterVisibility: ${address.setterVisibility}")
 //        address.setterVisibility = "ddd" // cannot this
 
+    }
+    // Kotlinはフィールドではなく、プロパティである
+    private fun backingFields() {
+        class Count {
+            // 暗黙的にバッキングフィールドを生成している例
+            var counter = 0
+                set(value) {
+                    if (value >= 0) {
+                        field = value
+                    }
+                }
+            // 暗黙的にバッキングフィールドを生成していない例
+            val isEmpty: Boolean
+                get() = this.counter == 0
+
+//            // 暗黙的にバッキングフィールドを生成していない例
+//            val isEmpty2: Boolean = false
+//                get() = !field
+        }
+
+        val count = Count()
+        println("count.counter: ${count.counter}")
+        count.counter = 5
+        println("count.counter after set 5: ${count.counter}")
+        count.counter = -1
+        println("count.counter after set -1: ${count.counter}")
+        println("count.isEmpty: ${count.isEmpty}")
     }
 }
