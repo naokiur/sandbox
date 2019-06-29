@@ -6,6 +6,7 @@ class PropertiesAndFields {
 
         getterAndSetter()
         backingFields()
+        backingProperty()
 
         println("${this.javaClass.name} end.")
     }
@@ -69,5 +70,20 @@ class PropertiesAndFields {
         count.counter = -1
         println("count.counter after set -1: ${count.counter}")
         println("count.isEmpty: ${count.isEmpty}")
+    }
+    private fun backingProperty() {
+        class Sample {
+            private var _table: Map<String, Int>? = null
+            public val table: Map<String, Int>
+                get() {
+                    if (_table == null)
+                        _table = HashMap()
+
+                    return _table ?: throw AssertionError("他スレッドによって、Nullをセットされた")
+                }
+        }
+        val sample = Sample()
+        println("sample.table: ${sample.table}")
+
     }
 }
