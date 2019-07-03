@@ -13,12 +13,7 @@ import io.ktor.gson.gson
 import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.routing
-import jp.ne.naokiur.transcribing.basics.ControlFlow
-import jp.ne.naokiur.transcribing.basics.ReturnsAndJumps
-import jp.ne.naokiur.transcribing.classesandobjects.ClassesAndInheritance
-import jp.ne.naokiur.transcribing.classesandobjects.PropertiesAndFields
-import jp.ne.naokiur.transcribing.gettingstarted.BasicSyntax
-import jp.ne.naokiur.transcribing.gettingstarted.Idioms
+import jp.ne.naokiur.transcribing.classesandobjects.CompileTimeConstants
 import java.text.DateFormat
 
 fun Application.transcribing() {
@@ -50,8 +45,11 @@ fun Application.transcribing() {
 //            val classesAndInheritance = ClassesAndInheritance()
 //            classesAndInheritance.execute()
 
-            val propertiesAndFields = PropertiesAndFields()
-            propertiesAndFields.execute()
+//            val propertiesAndFields = PropertiesAndFields()
+//            propertiesAndFields.execute()
+
+            val compileTimeConstants = CompileTimeConstants()
+            compileTimeConstants.execute()
 
             val gson = GsonBuilder().setPrettyPrinting().create()
             call.respond(gson.toJson("Hello"))
