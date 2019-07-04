@@ -14,6 +14,7 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import jp.ne.naokiur.transcribing.classesandobjects.CompileTimeConstants
+import jp.ne.naokiur.transcribing.classesandobjects.LateInitializedPropertiesAndVariables
 import java.text.DateFormat
 
 fun Application.transcribing() {
@@ -48,8 +49,11 @@ fun Application.transcribing() {
 //            val propertiesAndFields = PropertiesAndFields()
 //            propertiesAndFields.execute()
 
-            val compileTimeConstants = CompileTimeConstants()
-            compileTimeConstants.execute()
+//            val compileTimeConstants = CompileTimeConstants()
+//            compileTimeConstants.execute()
+
+            val lateInitializedPropertiesAndVariables = LateInitializedPropertiesAndVariables()
+            lateInitializedPropertiesAndVariables.execute()
 
             val gson = GsonBuilder().setPrettyPrinting().create()
             call.respond(gson.toJson("Hello"))
