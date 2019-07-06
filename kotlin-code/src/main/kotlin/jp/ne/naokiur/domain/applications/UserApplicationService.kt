@@ -5,7 +5,7 @@ import jp.ne.naokiur.domain.models.users.*
 import java.lang.Exception
 
 
-//fun jp.ne.naokiur.api.main(args: Array<String>) {
+//fun main(args: Array<String>) {
 //    showUsers()
 //
 //    val taroUser = User(userId = UserName(), userName = UserName("taro"), fullName = FullName("Tanaka", "Taro"))

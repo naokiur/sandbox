@@ -1,6 +1,6 @@
 package jp.ne.naokiur.api
 
-//import jp.ne.naokiur.api.controller.UserController
+//import UserController
 import com.google.gson.GsonBuilder
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -13,7 +13,6 @@ import io.ktor.gson.gson
 import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.routing
-import jp.ne.naokiur.transcribing.classesandobjects.CompileTimeConstants
 import jp.ne.naokiur.transcribing.classesandobjects.LateInitializedPropertiesAndVariables
 import java.text.DateFormat
 

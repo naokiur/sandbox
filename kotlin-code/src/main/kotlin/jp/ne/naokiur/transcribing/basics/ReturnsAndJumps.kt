@@ -1,8 +1,5 @@
 package jp.ne.naokiur.transcribing.basics
 
-import java.util.*
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
-
 class ReturnsAndJumps {
     fun execute() {
         println("${this.javaClass.name} begin.")

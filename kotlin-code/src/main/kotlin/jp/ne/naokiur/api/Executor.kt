@@ -1,6 +1,6 @@
 package jp.ne.naokiur.api
 
-//import jp.ne.naokiur.api.controller.UserController
+//import UserController
 import com.google.gson.GsonBuilder
 import io.ktor.application.Application
 import io.ktor.application.call

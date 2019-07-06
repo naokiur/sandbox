@@ -4,7 +4,6 @@ import jp.ne.naokiur.domain.infra.circle.CircleRepositoryInterface
 import jp.ne.naokiur.domain.infra.user.UserRepositoryInterface
 import jp.ne.naokiur.domain.models.circle.CircleFactoryInteface
 import jp.ne.naokiur.domain.models.circle.CircleId
-import jp.ne.naokiur.domain.models.users.User
 import jp.ne.naokiur.domain.models.users.UserId
 import java.lang.Exception
 
