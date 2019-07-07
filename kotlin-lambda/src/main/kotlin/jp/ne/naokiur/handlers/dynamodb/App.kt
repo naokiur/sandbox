@@ -2,6 +2,7 @@ package jp.ne.naokiur.handlers.dynamodb
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
+import jp.ne.naokiur.handlers.GatewayResponse
 import java.util.*
 
 /**
@@ -15,9 +16,9 @@ class App : RequestHandler<Any, Any> {
         headers["X-Custom-Header"] = "application/json"
 
         val dynamodb = DynamoDBManager()
-        dynamodb.putItem()
+        val response = dynamodb.putItem("a", Calendar.getInstance())
 
 
-        return GatewayResponse("result: DynamoDB!!", headers, 200)
+        return GatewayResponse("result: $response", headers, 200)
     }
 }

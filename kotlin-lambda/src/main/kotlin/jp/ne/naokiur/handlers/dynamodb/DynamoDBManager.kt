@@ -1,30 +1,29 @@
 package jp.ne.naokiur.handlers.dynamodb
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder
-import java.io.File
+import com.amazonaws.services.dynamodbv2.model.AttributeValue
+import com.amazonaws.services.dynamodbv2.model.PutItemRequest
+import com.amazonaws.services.dynamodbv2.model.PutItemResult
+import java.util.*
 
 class DynamoDBManager {
-    private val dynamodb: AmazonDynamoDB
+    private val dynamodb: AmazonDynamoDB = AmazonDynamoDBClientBuilder
+            .standard()
+            .withRegion(Regions.AP_NORTHEAST_1)
+            .build()
 
-    init {
-        println(System.getProperty("user.home"))
-        println(File(System.getProperty("user.home"), ".aws"))
+    private val tableName = "login-history"
 
-        val credentialsProvider = ProfileCredentialsProvider()
-        credentialsProvider.credentials
+    fun putItem(userName: String, loginTime: Calendar): PutItemResult {
 
-        dynamodb = AmazonDynamoDBClientBuilder
-                .standard()
-                .withCredentials(credentialsProvider)
-                .withRegion(Regions.AP_NORTHEAST_1)
-                .build()
+        val item = mapOf(
+                "user_name" to AttributeValue(userName),
+                "login_time" to AttributeValue().withN(loginTime.time.time.toString())
+        )
 
-    }
-
-    public fun putItem() {
-        println("putItem")
+        val putItemRequest = PutItemRequest(tableName, item)
+        return dynamodb.putItem(putItemRequest)
     }
 }

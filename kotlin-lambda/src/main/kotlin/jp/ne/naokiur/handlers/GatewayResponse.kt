@@ -1,4 +1,4 @@
-package jp.ne.naokiur.handlers.dynamodb
+package jp.ne.naokiur.handlers
 
 import java.util.Collections
 import java.util.HashMap

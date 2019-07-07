@@ -2,6 +2,7 @@ package jp.ne.naokiur.handlers.calculate
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
+import jp.ne.naokiur.handlers.GatewayResponse
 import java.util.*
 
 /**
