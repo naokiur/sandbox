@@ -22,7 +22,10 @@ class S3Manager {
             println(bucket)
         }
     }
-    fun loadObjectContent(bucketName: String, objectKey: String): S3ObjectInputStream {
-        return s3.getObject(bucketName, objectKey).objectContent
+    fun loadObjectContent(bucketName: String, objectKey: String): String {
+        return s3.getObject(bucketName, objectKey)
+                .objectContent
+                .bufferedReader()
+                .use { it.readText() }
     }
 }
