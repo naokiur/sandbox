@@ -96,3 +96,7 @@ crashlytics-build.properties
 fabric.properties
 
 .DS_Store
+__pycache__
+
+# For sandbox repository
+*.csv
