@@ -18,9 +18,12 @@ class DynamoDBManager {
 
     fun putItem(userName: String, loginTime: Calendar): PutItemResult {
 
+        // Convert milli time to time.
+        val time: Long = loginTime.time.time / 1000
+
         val item = mapOf(
                 "user_name" to AttributeValue(userName),
-                "login_time" to AttributeValue().withN(loginTime.time.time.toString())
+                "login_time" to AttributeValue().withN(time.toString())
         )
 
         val putItemRequest = PutItemRequest(tableName, item)
