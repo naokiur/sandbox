@@ -17,6 +17,15 @@ Resources:
       CodeUri: ./
       Handler: jp.ne.naokiur.handlers.calculate.App
       Runtime: java8
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
+  DynamodbLambdaFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./
+      Handler: jp.ne.naokiur.handlers.dynamodb.App
+      Runtime: java8
+  S3LambdaFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./
+      Handler: jp.ne.naokiur.handlers.s3.App
+      Runtime: java8

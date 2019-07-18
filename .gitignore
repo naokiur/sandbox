@@ -100,3 +100,4 @@ __pycache__
 
 # For sandbox repository
 *.csv
+.aws-sam
