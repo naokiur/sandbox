@@ -1,4 +1,0 @@
-rootProject.name = 'kotlin-lambda'
-enableFeaturePreview('IMPROVED_POM_SUPPORT')
-
-
