@@ -1,0 +1,74 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.1'
+	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
+	id 'maven-publish'
+	id 'org.springframework.boot.experimental.thin-launcher' version "1.0.31.RELEASE"
+}
+
+
+group = 'com.naokiur.serverless'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+ext {
+	set('springCloudVersion', "2023.0.2")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-function-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws:4.1.0'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+assemble.dependsOn = [thinJar, shadowJar]
+shadowJar.mustRunAfter thinJar
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
+shadowJar {
+	archiveClassifier = 'aws'
+	manifest {
+		inheritFrom(project.tasks.thinJar.manifest)
+	}
+	dependencies {
+		exclude(
+				dependency("org.springframework.cloud:spring-cloud-function-web:${springCloudVersion}"))
+	}
+	// Required for Spring
+	mergeServiceFiles()
+	append 'META-INF/spring.handlers'
+	append 'META-INF/spring.schemas'
+	append 'META-INF/spring.tooling'
+	append 'META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports'
+	append 'META-INF/spring/org.springframework.boot.actuate.autoconfigure.web.ManagementContextConfiguration.imports'
+	transform(PropertiesFileTransformer) {
+		paths = ['META-INF/spring.factories']
+		mergeStrategy = "append"
+	}
+}
