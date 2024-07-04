@@ -55,13 +55,11 @@ provider:
 
 # you can add packaging information here
 package:
-  artifact: build/libs/java-spring-cloud-function-0.0.1-SNAPSHOT-aws.jar
+  artifact: build/libs/sample-0.0.1-SNAPSHOT-aws.jar
 
 functions:
   hello:
-    handler: com.serverless.AwsLambdaHandler
-    environment:
-      FUNCTION_NAME: uppercase
+    handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
