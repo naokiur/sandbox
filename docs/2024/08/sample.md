@@ -1,6 +1,6 @@
 ---
 layout: default
-title: エンジニアの卵になるためのGitHub Pages since 2016/08/27
+title: Sample page
 ---
 
 # sample pages!!
