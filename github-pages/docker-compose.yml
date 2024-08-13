@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  website:
+    build: .
+    command: /bin/bash -c "ls -la  && jekyll build && jekyll serve --watch"
+    volumes:
+      - $PWD/docs:/srv/jekyll
+    ports:
+      - "4000:4000"
