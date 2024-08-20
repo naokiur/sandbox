@@ -1,7 +1,5 @@
 title: naoki-ur-sandbox-pages
 description: エンジニアの卵になるためのGitHub Pages since 2016/08/27
-remote_theme: pages-themes/minimal@v0.2.0
+theme: jekyll-theme-minimal
 plugins:
-  - jekyll-remote-theme
-github:
-  is_project_page: false
+  - github-pages
