@@ -3,7 +3,10 @@ services:
   website:
     build: .
     working_dir: /srv/jekyll/docs
-    command: /bin/bash -c "jekyll build --config _config.local.yml && jekyll serve --config _config.local.yml --watch"
+    command: >
+      /bin/bash -c "
+      jekyll serve --config _config.local.yml --watch --baseurl /sandbox
+      "
     volumes:
       - $PWD/docs:/srv/jekyll/docs
     ports:
