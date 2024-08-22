@@ -101,3 +101,11 @@ __pycache__
 # For sandbox repository
 *.csv
 .aws-sam
+
+
+# local jekyll file
+
+## jekyllのbuild, serveのargsで試行錯誤したが、
+## .sass-cacheの階層変更の方法を見つけ出せなかったため、.gitignoreで対応とする
+github-pages/docs/.sass-cache
+github-pages/docs/_site

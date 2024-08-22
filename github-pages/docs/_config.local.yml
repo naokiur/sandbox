@@ -1,0 +1,8 @@
+title: naoki-ur-sandbox-pages
+description: エンジニアの卵になるためのGitHub Pages since 2016/08/27
+theme: jekyll-theme-minimal
+gems:
+  # in GitHub Actions Workflow, already applied. but local cannot apply.
+  - jekyll-relative-links
+sass:
+  cache: false
