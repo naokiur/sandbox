@@ -1,0 +1,44 @@
+name: Create Weekly Records branch/issue
+
+# try at GitHub Actions temporary Friday.
+# actually, would like to run at Sunday.
+on:
+  schedule:
+    - cron: 0 0 * * 5
+#    - cron: 0 0 * * 0
+jobs:
+  setup:
+    name: Append current_date to GITHUB_OUTPUT
+    runs-on: ubuntu-latest
+    steps:
+      - name: append current-date
+        run: echo "current-date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+  create-issue:
+    name: Create team sync issue
+    needs: setup
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create team sync issue
+        run: |
+          gh issue create --title "$TITLE $CURRENT_DATE"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TITLE: Report issue for this week
+          CURRENT_DATE: ${{ needs.setup.outputs.current-date }}
+  create-branch:
+    name: Create Branch for weekly records
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_DATE: ${{ needs.setup.outputs.current-date }}
+        run: |
+          git switch -c feature/add/weekly-records/$CURRENT_DATE
+          git push -u origin feature/add/weekly-records/$CURRENT_DATE
