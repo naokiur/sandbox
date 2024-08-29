@@ -3,4 +3,7 @@ layout: default
 title: エンジニアの卵になるため
 ---
 
-### [2024/08 sample](./2024/08/sample.md)
+# Weekly records
+
+## 2024
+* [2024/08/25-31](weekly-records/2024/0825-31.md)
