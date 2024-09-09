@@ -14,11 +14,11 @@ jobs:
     name: Append current_date to GITHUB_OUTPUT
     runs-on: ubuntu-latest
     outputs:
-      current-date: ${{ steps.setup.outputs.current-date }}
+      currentdate: ${{ steps.setup.outputs.currentdate }}
     steps:
-      - id: current-date
-        name: append current-date
-        run: echo "current-date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+      - id: currentdate
+        name: append currentdate
+        run: echo "currentdate=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
   create-issue:
     name: Create team sync issue
     needs: setup
@@ -28,12 +28,11 @@ jobs:
     steps:
       - name: Create team sync issue
         run: |
-          gh issue create --title "$TITLE $CURRENT_DATE"
+          gh issue create --title "$TITLE ${{ needs.setup.outputs.currentdate }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           TITLE: Report issue for this week
-          CURRENT_DATE: ${{ needs.setup.outputs.current-date }}
   create-branch:
     name: Create Branch for weekly records
     needs: setup
@@ -44,7 +43,6 @@ jobs:
       - name: Create branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CURRENT_DATE: ${{ needs.setup.outputs.current-date }}
         run: |
           git switch -c feature/add/weekly-records/$CURRENT_DATE
           git push -u origin feature/add/weekly-records/$CURRENT_DATE
