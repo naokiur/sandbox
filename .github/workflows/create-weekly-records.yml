@@ -28,11 +28,12 @@ jobs:
     steps:
       - name: Create team sync issue
         run: |
-          gh issue create --title "$TITLE $CURRENT_DATE"
+          gh issue create --title "$TITLE $CURRENT_DATE" --body "$ISSUE_BODY"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           TITLE: Report issue for this week
+          ISSUE_BODY: Report issue for this week
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
   create-branch:
     name: Create Branch for weekly records
