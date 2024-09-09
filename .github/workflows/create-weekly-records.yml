@@ -6,12 +6,18 @@ on:
   schedule:
     - cron: 0 0 * * 5
 #    - cron: 0 0 * * 0
+  # try on GitHub Actions,
+  workflow_dispatch:
+
 jobs:
   setup:
     name: Append current_date to GITHUB_OUTPUT
     runs-on: ubuntu-latest
+    outputs:
+      current-date: ${{ steps.setup.outputs.current-date }}
     steps:
-      - name: append current-date
+      - id: current-date
+        name: append current-date
         run: echo "current-date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
   create-issue:
     name: Create team sync issue
