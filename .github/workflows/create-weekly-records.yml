@@ -30,14 +30,13 @@ jobs:
     steps:
       - name: Create team sync issue
         run: |
-          issue=$(gh issue create --title "$TITLE $CURRENT_DATE" --body "$ISSUE_BODY" --json number -q ".number")
-          echo "issue_number=$issue" >> $GITHUB_OUTPUT
+          gh issue create --title "$TITLE $CURRENT_DATE" --body "$ISSUE_BODY"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           TITLE: Report issue for this week
           ISSUE_BODY: Report issue for this week
-          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
+          CURRENT_DATE: ${{ needs.configure.outputs.current_date }}
   create_branch:
     name: Create Branch for weekly records
     needs: setup
@@ -62,7 +61,7 @@ jobs:
     steps:
       - name: Create draft Pull request
         run: |
-          gh pr create --draft --base main --head feature/add/weekly-records/${{ needs.setup.outputs.currentdate }} --title "Weekly Records Update" --body "This PR addresses Issue fix #${{ needs.create_issue.outputs.issue_number }}."
+          gh pr create --draft --base main --head feature/add/weekly-records/$CURRENT_DATE --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
