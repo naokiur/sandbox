@@ -19,23 +19,26 @@ jobs:
       - id: configure
         name: append current_date
         run: echo "current_date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
-  create-issue:
+  create_issue:
     name: Create team sync issue
     needs: setup
     runs-on: ubuntu-latest
+    outputs:
+      issue_number: ${{ steps.create_issue.outputs.issue_number }}
     permissions:
       issues: write
     steps:
       - name: Create team sync issue
         run: |
-          gh issue create --title "$TITLE $CURRENT_DATE" --body "$ISSUE_BODY"
+          issue=$(gh issue create --title "$TITLE $CURRENT_DATE" --body "$ISSUE_BODY" --json number -q ".number")
+          echo "issue_number=$issue" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           TITLE: Report issue for this week
           ISSUE_BODY: Report issue for this week
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
-  create-branch:
+  create_branch:
     name: Create Branch for weekly records
     needs: setup
     runs-on: ubuntu-latest
@@ -49,3 +52,17 @@ jobs:
         run: |
           git switch -c feature/add/weekly-records/$CURRENT_DATE
           git push -u origin feature/add/weekly-records/$CURRENT_DATE
+  create_draft_pull_request:
+    name: Create Pull Request for weekly records
+    needs:
+      - setup
+      - create_issue
+      - create_branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create draft Pull request
+        run: |
+          gh pr create --draft --base main --head feature/add/weekly-records/${{ needs.setup.outputs.currentdate }} --title "Weekly Records Update" --body "This PR addresses Issue fix #${{ needs.create_issue.outputs.issue_number }}."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
