@@ -44,8 +44,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
         run: |
-          git switch -c feature/add/weekly-records/$CURRENT_DATE
-          git push -u origin feature/add/weekly-records/$CURRENT_DATE
+          git switch -c weekly-records/$CURRENT_DATE
+          git push -u origin weekly-records/$CURRENT_DATE
   create_draft_pull_request:
     name: Create Pull Request for weekly records
     needs:
@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Create draft Pull request
         run: |
-          gh pr create --draft --base main --head feature/add/weekly-records/$CURRENT_DATE --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
+          gh pr create --draft --base main --head weekly-records/$CURRENT_DATE --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
