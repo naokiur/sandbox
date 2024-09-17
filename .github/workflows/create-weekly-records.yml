@@ -1,13 +1,8 @@
 name: Create Weekly Records branch/issue
 
-# try at GitHub Actions temporary Friday.
-# actually, would like to run at Sunday.
 on:
   schedule:
-    - cron: 0 0 * * 5
-#    - cron: 0 0 * * 0
-  # try on GitHub Actions,
-  workflow_dispatch:
+    - cron: 0 0 * * 0
 
 jobs:
   setup:
