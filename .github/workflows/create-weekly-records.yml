@@ -1,40 +1,38 @@
 name: Create Weekly Records branch/issue
 
-# try at GitHub Actions temporary Friday.
-# actually, would like to run at Sunday.
 on:
   schedule:
-    - cron: 0 0 * * 5
-#    - cron: 0 0 * * 0
-  # try on GitHub Actions,
-  workflow_dispatch:
+    - cron: 0 0 * * 0
 
 jobs:
   setup:
     name: Append current_date to GITHUB_OUTPUT
     runs-on: ubuntu-latest
     outputs:
-      current-date: ${{ steps.setup.outputs.current-date }}
+      current_date: ${{ steps.configure.outputs.current_date }}
     steps:
-      - id: current-date
-        name: append current-date
-        run: echo "current-date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
-  create-issue:
+      - id: configure
+        name: append current_date
+        run: echo "current_date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+  create_issue:
     name: Create team sync issue
     needs: setup
     runs-on: ubuntu-latest
+    outputs:
+      issue_number: ${{ steps.create_issue.outputs.issue_number }}
     permissions:
       issues: write
     steps:
       - name: Create team sync issue
         run: |
-          gh issue create --title "$TITLE $CURRENT_DATE"
+          gh issue create --title "$TITLE $CURRENT_DATE" --body "$ISSUE_BODY"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           TITLE: Report issue for this week
-          CURRENT_DATE: ${{ needs.setup.outputs.current-date }}
-  create-branch:
+          ISSUE_BODY: Report issue for this week
+          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
+  create_branch:
     name: Create Branch for weekly records
     needs: setup
     runs-on: ubuntu-latest
@@ -44,7 +42,23 @@ jobs:
       - name: Create branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CURRENT_DATE: ${{ needs.setup.outputs.current-date }}
+          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
         run: |
           git switch -c feature/add/weekly-records/$CURRENT_DATE
           git push -u origin feature/add/weekly-records/$CURRENT_DATE
+  create_draft_pull_request:
+    name: Create Pull Request for weekly records
+    needs:
+      - setup
+      - create_issue
+      - create_branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create draft Pull request
+        run: |
+          gh pr create --draft --base main --head feature/add/weekly-records/$CURRENT_DATE --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
