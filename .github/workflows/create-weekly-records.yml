@@ -59,6 +59,8 @@ jobs:
       - create_branch
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Create draft Pull request
         run: |
           gh pr create --draft --base main --head feature/add/weekly-records/$CURRENT_DATE --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
