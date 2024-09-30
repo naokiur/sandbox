@@ -42,6 +42,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Create commit and draft Pull request
         run: |
+          git branch -a 
           git switch -c wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER origin/wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
