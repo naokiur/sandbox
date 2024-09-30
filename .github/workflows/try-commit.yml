@@ -5,37 +5,70 @@ on:
 
 jobs:
   setup:
-    name: Append current_date to GITHUB_OUTPUT
+    name: Append begin_on to GITHUB_OUTPUT
     runs-on: ubuntu-latest
     outputs:
-      current_date: ${{ steps.configure.outputs.current_date }}
+      current_year: ${{ steps.configure.outputs.current_year }}
+      begin_on_mm: ${{ steps.configure.outputs.begin_on_mm }}
+      begin_on_dd: ${{ steps.configure.outputs.begin_on_dd }}
+      end_on_mm: ${{ steps.configure.outputs.end_on_mm }}
+      end_on_dd: ${{ steps.configure.outputs.end_on_dd }}
       random_number: ${{ steps.configure.outputs.random_number }}
     steps:
       - id: configure
-        name: append current_date
+        name: append datetime parameters
         run: |
-          echo "current_date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "current_year=$(date '+%Y')" >> $GITHUB_OUTPUT
+          echo "begin_on_mm=$(date '+%m')" >> $GITHUB_OUTPUT
+          echo "begin_on_dd=$(date '+%d')" >> $GITHUB_OUTPUT
+          echo "end_on_mm=$(date '+%m' --date '6 day' )" >> $GITHUB_OUTPUT
+          echo "end_on_dd=$(date '+%d' --date '6 day' )" >> $GITHUB_OUTPUT
           echo "random_number=$(echo $$)" >> $GITHUB_OUTPUT
   create_branch_pr:
     name: Create Branch and Draft Pull Request for weekly records
     needs: setup
     runs-on: ubuntu-latest
+    env:
+      PERIOD: |
+        ${{
+          needs.setup.outputs.begin_on_mm == steps.configure.outputs.end_on_mm &&
+            format('{0}{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_dd) ||
+            format('{0}{1}-{2}{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_mm, steps.configure.outputs.end_on_dd)
+        }}
+      PERIOD_FOR_INDEX: |
+        ${{
+          needs.setup.outputs.begin_on_mm == steps.configure.outputs.end_on_mm &&
+            format('{0}/{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_dd) ||
+            format('{0}/{1}-{2}/{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_mm, steps.configure.outputs.end_on_dd)
+        }}
+      RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Create branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
-          RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
+        run: git switch -c wip/create-commit/$PERIOD/$RANDOM_NUMBER
+      - name: Setup GitHub bot user
         run: |
-          git switch -c wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          cp ./github-pages/docs/weekly-records/template-mmdd-dd.md ./github-pages/docs/weekly-records/2024/$CURRENT_DATE.md
-          echo "* [2024/09/22-28](weekly-records/2024/0922-28.md)" >> ./github-pages/docs/index.md
-          git add ./github-pages/docs/weekly-records/2024/$CURRENT_DATE.md
+      - name: Create Commit
+        env:
+          CURRENT_YEAR: ${{ needs.setup.outputs.current_year }}
+        run: |
+          cp ./github-pages/docs/weekly-records/template-mmdd-dd.md ./github-pages/docs/weekly-records/$CURRENT_YEAR/$PERIOD.md
+          echo "* [$PERIOD_FOR_INDEX](weekly-records/$CURRENT_YEAR/$PERIOD.md)" >> ./github-pages/docs/index.md
+          git add ./github-pages/docs/weekly-records/$CURRENT_YEAR/$PERIOD.md
           git add ./github-pages/docs/index.md
           git commit -m "initial commit"
-          git push -u origin wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER
-          gh pr create --draft --base main --head wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
+      - name: Create draft pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_YEAR: ${{ needs.setup.outputs.current_year }}
+          BEGIN_ON_MM: ${{ needs.setup.outputs.begin_on_mm }}
+          BEGIN_ON_DD: ${{ needs.setup.outputs.begin_on_dd }}
+          END_ON_MM: ${{ needs.setup.outputs.end_on_mm }}
+          END_ON_DD: ${{ needs.setup.outputs.end_on_dd }}
+          RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
+        run: |
+          git push -u origin wip/create-commit/$PERIOD/$RANDOM_NUMBER
+          gh pr create --draft --base main --headwip/create-commit/$PERIOD/$RANDOM_NUMBER --title "Weekly Records Update" --body "$PERIOD This PR addresses Issue fix #issue number ."
