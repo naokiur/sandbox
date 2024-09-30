@@ -6,14 +6,25 @@ on:
 
 jobs:
   setup:
-    name: Append current_date to GITHUB_OUTPUT
+    name: Append datetime parameters to GITHUB_OUTPUT
     runs-on: ubuntu-latest
     outputs:
       current_date: ${{ steps.configure.outputs.current_date }}
+      current_year: ${{ steps.configure.outputs.current_year }}
+      begin_on_mm: ${{ steps.configure.outputs.begin_on_mm }}
+      begin_on_dd: ${{ steps.configure.outputs.begin_on_dd }}
+      end_on_mm: ${{ steps.configure.outputs.end_on_mm }}
+      end_on_dd: ${{ steps.configure.outputs.end_on_dd }}
     steps:
       - id: configure
-        name: append current_date
-        run: echo "current_date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+        name: append datetime parameters
+        run: |
+          echo "current_date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "current_year=$(date '+%Y')" >> $GITHUB_OUTPUT
+          echo "begin_on_mm=$(date '+%m')" >> $GITHUB_OUTPUT
+          echo "begin_on_dd=$(date '+%d')" >> $GITHUB_OUTPUT
+          echo "end_on_mm=$(date '+%m' --date '6 day' )" >> $GITHUB_OUTPUT
+          echo "end_on_dd=$(date '+%d' --date '6 day' )" >> $GITHUB_OUTPUT
   create_issue:
     name: Create team sync issue
     needs: setup
@@ -32,10 +43,23 @@ jobs:
           TITLE: Report issue for this week
           ISSUE_BODY: Report issue for this week
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
-  create_branch:
-    name: Create Branch for weekly records
-    needs: setup
+  create_branch_draft_pull_request:
+    name: Create Branch/Pull Request for weekly records
+    needs:
+      - setup
+      - create_issue
     runs-on: ubuntu-latest
+    env:
+      PERIOD: ${{
+          needs.setup.outputs.begin_on_mm == needs.setup.outputs.end_on_mm &&
+            format('{0}{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_dd) ||
+            format('{0}{1}-{2}{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_mm, needs.setup.outputs.end_on_dd)
+        }}
+      PERIOD_FOR_INDEX: ${{
+          needs.setup.outputs.begin_on_mm == needs.setup.outputs.end_on_mm &&
+            format('{0}/{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_dd) ||
+            format('{0}/{1}-{2}/{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_mm, needs.setup.outputs.end_on_dd)
+        }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,21 +68,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
         run: |
-          git switch -c weekly-records/$CURRENT_DATE
-          git push -u origin weekly-records/$CURRENT_DATE
-  create_draft_pull_request:
-    name: Create Pull Request for weekly records
-    needs:
-      - setup
-      - create_issue
-      - create_branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Create draft Pull request
+          git switch -c weekly-records/$PERIOD
+      - name: Setup GitHub bot user
         run: |
-          gh pr create --draft --base main --head weekly-records/$CURRENT_DATE --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Create Commit
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
+          CURRENT_YEAR: ${{ needs.setup.outputs.current_year }}
+        run: |
+          cp ./github-pages/docs/weekly-records/template-mmdd-dd.md ./github-pages/docs/weekly-records/$CURRENT_YEAR/$PERIOD.md
+          echo -e "* [$PERIOD_FOR_INDEX](weekly-records/$CURRENT_YEAR/$PERIOD.md)\n" >> ./github-pages/docs/index.md
+          git add ./github-pages/docs/weekly-records/$CURRENT_YEAR/$PERIOD.md
+          git add ./github-pages/docs/index.md
+          git commit -m "initial commit"
+      - name: Create draft pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push -u origin weekly-records/$PERIOD
+          gh pr create --draft --base main --head weekly-records/$PERIOD --title "Weekly Records Update $PERIOD" --body "$PERIOD This PR addresses Issue fix #issue number ."
