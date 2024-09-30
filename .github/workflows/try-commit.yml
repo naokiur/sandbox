@@ -29,8 +29,8 @@ jobs:
           CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
           RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
         run: |
-          git switch -c wip/create-commit/$CURRENT_DATE/RANDOM_NUMBER
-          git push -u origin wip/create-commit/$CURRENT_DATE/RANDOM_NUMBER
+          git switch -c wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER
+          git push -u origin wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER
   create_draft_pull_request:
     name: Create Pull Request for weekly records
     needs:
