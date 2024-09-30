@@ -1,0 +1,55 @@
+name: Try to Create first commit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    name: Append current_date to GITHUB_OUTPUT
+    runs-on: ubuntu-latest
+    outputs:
+      current_date: ${{ steps.configure.outputs.current_date }}
+      random_number: ${{ steps.configure.outputs.random_number }}
+    steps:
+      - id: configure
+        name: append current_date
+        run: |
+          echo "current_date=$(date '+%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "random_number=$(echo $$)" >> $GITHUB_OUTPUT
+  create_branch:
+    name: Create Branch for weekly records
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
+          RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
+        run: |
+          git switch -c wip/create-commit/$CURRENT_DATE/RANDOM_NUMBER
+          git push -u origin wip/create-commit/$CURRENT_DATE/RANDOM_NUMBER
+  create_draft_pull_request:
+    name: Create Pull Request for weekly records
+    needs:
+      - setup
+      - create_branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create commit and draft Pull request
+        run: |
+          git switch wip/create-commit/$CURRENT_DATE/RANDOM_NUMBER
+          cp ./github-pages/docs/weekly-records/template-mmdd-dd.md ./github-pages/docs/weekly-records/2024/$CURRENT_DATE.md
+          echo "* [2024/09/22-28](weekly-records/2024/0922-28.md)" >> ./github-pages/docs/index.md
+          git add ./github-pages/docs/weekly-records/2024/$CURRENT_DATE.md
+          git add ./github-pages/docs/index.md
+          git commit -m "initial commit"
+          gh pr create --draft --base main --head weekly-records/$CURRENT_DATE --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_DATE: ${{ needs.setup.outputs.current_date }}
+          RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
