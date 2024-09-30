@@ -46,7 +46,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Create branch
-        run: git switch -c wip/create-commit/$PERIOD/$RANDOM_NUMBER
+        run: |
+          echo "wip/create-commit/$PERIOD/$RANDOM_NUMBER"
+          git switch -c wip/create-commit/$PERIOD/$RANDOM_NUMBER
       - name: Setup GitHub bot user
         run: |
           git config user.name  "github-actions[bot]"
