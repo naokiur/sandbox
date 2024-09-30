@@ -31,15 +31,15 @@ jobs:
     env:
       PERIOD: |
         ${{
-          needs.setup.outputs.begin_on_mm == steps.configure.outputs.end_on_mm &&
-            format('{0}{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_dd) ||
-            format('{0}{1}-{2}{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_mm, steps.configure.outputs.end_on_dd)
+          needs.setup.outputs.begin_on_mm == needs.setup.outputs.end_on_mm &&
+            format('{0}{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_dd) ||
+            format('{0}{1}-{2}{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_mm, needs.setup.outputs.end_on_dd)
         }}
       PERIOD_FOR_INDEX: |
         ${{
-          needs.setup.outputs.begin_on_mm == steps.configure.outputs.end_on_mm &&
-            format('{0}/{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_dd) ||
-            format('{0}/{1}-{2}/{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, steps.configure.outputs.end_on_mm, steps.configure.outputs.end_on_dd)
+          needs.setup.outputs.begin_on_mm == needs.setup.outputs.end_on_mm &&
+            format('{0}/{1}-{2}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_dd) ||
+            format('{0}/{1}-{2}/{3}', needs.setup.outputs.begin_on_mm, needs.setup.outputs.begin_on_dd, needs.setup.outputs.end_on_mm, needs.setup.outputs.end_on_dd)
         }}
       RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
     steps:
