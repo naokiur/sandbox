@@ -49,6 +49,7 @@ jobs:
           git add ./github-pages/docs/weekly-records/2024/$CURRENT_DATE.md
           git add ./github-pages/docs/index.md
           git commit -m "initial commit"
+          git push origin wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER
           gh pr create --draft --base main --head wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER --title "Weekly Records Update" --body "$CURRENT_DATE This PR addresses Issue fix #issue number ."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
