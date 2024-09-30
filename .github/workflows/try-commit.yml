@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Create commit and draft Pull request
         run: |
-          git switch wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER origin/wip/create-commit/$CURRENT_DATE/$RANDOM_NUMBER
+          git branch
           cp ./github-pages/docs/weekly-records/template-mmdd-dd.md ./github-pages/docs/weekly-records/2024/$CURRENT_DATE.md
           echo "* [2024/09/22-28](weekly-records/2024/0922-28.md)" >> ./github-pages/docs/index.md
           git add ./github-pages/docs/weekly-records/2024/$CURRENT_DATE.md
