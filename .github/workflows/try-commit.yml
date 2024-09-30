@@ -71,4 +71,4 @@ jobs:
           RANDOM_NUMBER: ${{ needs.setup.outputs.random_number }}
         run: |
           git push -u origin wip/create-commit/$PERIOD/$RANDOM_NUMBER
-          gh pr create --draft --base main --headwip/create-commit/$PERIOD/$RANDOM_NUMBER --title "Weekly Records Update" --body "$PERIOD This PR addresses Issue fix #issue number ."
+          gh pr create --draft --base main --head wip/create-commit/$PERIOD/$RANDOM_NUMBER --title "Weekly Records Update" --body "$PERIOD This PR addresses Issue fix #issue number ."
