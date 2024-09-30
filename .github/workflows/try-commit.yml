@@ -56,7 +56,7 @@ jobs:
           CURRENT_YEAR: ${{ needs.setup.outputs.current_year }}
         run: |
           cp ./github-pages/docs/weekly-records/template-mmdd-dd.md ./github-pages/docs/weekly-records/$CURRENT_YEAR/$PERIOD.md
-          echo "* [$PERIOD_FOR_INDEX](weekly-records/$CURRENT_YEAR/$PERIOD.md)" >> ./github-pages/docs/index.md
+          echo -e "* [$PERIOD_FOR_INDEX](weekly-records/$CURRENT_YEAR/$PERIOD.md\n)" >> ./github-pages/docs/index.md
           git add ./github-pages/docs/weekly-records/$CURRENT_YEAR/$PERIOD.md
           git add ./github-pages/docs/index.md
           git commit -m "initial commit"
