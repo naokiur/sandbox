@@ -1,6 +1,6 @@
-package com.naokiur.challenge.generics.thirdparty.service;
+package com.naokiur.challenge.generics.another.thirdparty.service;
 
-import com.naokiur.challenge.generics.thirdparty.model.AnonymousCurrency;
+import com.naokiur.challenge.generics.another.thirdparty.model.AnonymousCurrency;
 
 public class Exchanger implements Exchange<AnonymousCurrency> {
 
