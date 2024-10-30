@@ -16,3 +16,10 @@ title: エンジニアの卵になるため
 * [2024/10/13-19](weekly-records/2024/1013-19.md)
 * [2024/10/20-26](weekly-records/2024/1020-26.md)
 
+# Portfolio
+
+
+
+| aa  | Aa  | 
+|-----|-----|
+| aaa | aaa |
